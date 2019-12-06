@@ -1,35 +1,380 @@
----
-layout: default
----
-<section class="content">
-	<div class="content-cnt fn-clear">
-		<div class="main fn-clear">
-			{% for rpost in paginator.posts %}
-            	<article class="main-excerpt fn-clear">
-                    <h3 class="main-excerpt-title"><a href="{{ rpost.url }}" title="{{ rpost.title }}" rel="bookmark">{{ rpost.title }}</a></h3>
-                    <p class="date"><time pubdate="{{ rpost.date }}">{{ rpost.date | date_to_string }}</time></p>
-                    <p>{{ rpost.description }}</p>
-                   	<p class="more"><a href="{{ rpost.url }}" title="Read More" rel="nofollow"><span>&#10149;</span>Read More</a></p>
-                </article>
-            {% endfor %}
-            {% if paginator.total_pages > 1 %}
-		        <nav id="pagination">
-		            <ul class="pagination">
-		                {% for page in (1..paginator.total_pages) %}
-		                    {% if page == paginator.page %}
-		                        <li class="current"><a href="javascript:void(0);">{{ page }}</a></li>
-		                    {% else %}
-		                        <li><a href="/{%if page > 1 %}page{{ page }}/{% endif %}">{{ page }}</a></li>
-		                    {% endif %}
-		                {% endfor %}
-		            </ul>
-		        </nav>
-		    {% endif %}			
+<!DOCTYPE HTML>
+<!--
+	Helios by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Helios by HTML5 UP</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="homepage is-preload">
+		<div id="page-wrapper">
+
+			<!-- Header -->
+				<div id="header">
+
+					<!-- Inner -->
+						<div class="inner">
+							<header>
+								<h1><a href="index.html" id="logo">mythSun</a></h1>
+								<hr />
+								<p>我的神秘源于我炽热的光芒</p>
+							</header>
+							<footer>
+								<a href="#banner" class="button circled scrolly">开始了解</a>
+							</footer>
+						</div>
+
+					<!-- Nav -->
+						<nav id="nav">
+							<ul>
+								<li><a href="index.html">主页</a></li>
+								<li>
+									<a href="#">博客</a>
+									<ul>
+										<li><a href="#">日常点滴</a></li>
+										<li><a href="#">学习生涯</a></li>
+										<li><a href="#">走过的坑</a></li>
+										<li>
+											<a href="#">我的博客 &hellip;</a>
+											<ul>
+												<li><a href="#">JAVA</a></li>
+												<li><a href="#">前端</a></li>
+												<li><a href="#">框架</a></li>
+												<li><a href="#">数据库</a></li>
+											</ul>
+										</li>
+										<li><a href="#">生活琐碎</a></li>
+									</ul>
+								</li>
+								<li><a href="#">项目</a></li>
+								<li><a href="#">资源</a></li>
+								<li><a href="#">联系</a></li>
+							</ul>
+						</nav>
+
+				</div>
+
+			<!-- Banner -->
+				<section id="banner">
+					<header>
+						<h2>嗨，你好，我是<strong>mythSun</strong></h2>
+						<p>
+							我的大学生涯点点滴滴。（ps：鼠标放到箭头上别动哦）
+						</p>
+					</header>
+				</section>
+
+			<!-- Carousel -->
+				<section class="carousel">
+					<div class="reel">
+
+						<article>
+							<a href="#" class="image featured"><img src="images/pic01.jpg" alt="" /></a>
+							<header>
+								<h3><a href="#">看我技能树</a></h3>
+							</header>
+							<p>专业技能、生活技能、隐藏技能<br>来看看都有哪些吧</p>
+						</article>
+
+						<article>
+							<a href="#" class="image featured"><img src="images/pic02.jpg" alt="" /></a>
+							<header>
+								<h3><a href="#">学生会主席</a></h3>
+							</header>
+							<p>结交伙伴、组织活动、拉个赞助<br>还挺丰富了解一下？</p>
+						</article>
+
+						<article>
+							<a href="#" class="image featured"><img src="images/pic03.jpg" alt="" /></a>
+							<header>
+								<h3><a href="#">myth工作室</a></h3>
+							</header>
+							<p>志同道合的伙伴<br>有了一个共同奋斗的起点</p>
+						</article>
+
+						<article>
+							<a href="#" class="image featured"><img src="images/pic04.jpg" alt="" /></a>
+							<header>
+								<h3><a href="#">证书墙</a></h3>
+							</header>
+							<p>虽然奖学金满贯<br>但是比赛也不能落下</p>
+						</article>
+
+						<article>
+							<a href="#" class="image featured"><img src="images/pic05.jpg" alt="" /></a>
+							<header>
+								<h3><a href="#">业余生活</a></h3>
+							</header>
+							<p>羽毛球、长跑<br>游戏也是王者哦</p>
+						</article>
+
+						<article>
+							<a href="#" class="image featured"><img src="images/pic01.jpg" alt="" /></a>
+							<header>
+								<h3><a href="#">我的伙伴们</a></h3>
+							</header>
+							<p>吹拉弹唱、修图写程序<br>他们也是群小机灵鬼</p>
+						</article>
+
+						<article>
+							<a href="#" class="image featured"><img src="images/pic02.jpg" alt="" /></a>
+							<header>
+								<h3><a href="#">待拓展1</a></h3>
+							</header>
+							<p>不知道写啥<br>先这样吧</p>
+						</article>
+
+						<article>
+							<a href="#" class="image featured"><img src="images/pic03.jpg" alt="" /></a>
+							<header>
+								<h3><a href="#">待拓展1</a></h3>
+							</header>
+							<p>不知道写啥<br>先这样吧</p>
+						</article>
+
+						<article>
+							<a href="#" class="image featured"><img src="images/pic04.jpg" alt="" /></a>
+							<header>
+								<h3><a href="#">待拓展1</a></h3>
+							</header>
+							<p>不知道写啥<br>先这样吧</p>
+						</article>
+
+						<article>
+							<a href="#" class="image featured"><img src="images/pic05.jpg" alt="" /></a>
+							<header>
+								<h3><a href="#">待拓展1</a></h3>
+							</header>
+							<p>不知道写啥<br>先这样吧</p>
+						</article>
+
+					</div>
+				</section>
+
+			<!-- Main -->
+				<div class="wrapper style2">
+
+					<article id="main" class="container special">
+						<a href="#" class="image featured"><img src="images/pic06.jpg" alt="" /></a>
+						<header>
+							<h2><a href="#">学习才是成功的动力</a></h2>
+							<p>
+								学习是永恒的主题，是开启成功之门的金钥匙<br>整个世界都在进步，要想成功，想超过千万个甘于平庸的人，你就得不断的学习。
+							</p>
+						</header>
+						<p>
+							学习才是永续成功的动力，“逆水行舟，不进则退”。人生亦如此。社会在发展、在变化，在知识飞速发展的今天，不加强学习，提高自身修养，将无法适应高速发展的社会，更无法把工作做好。华罗庚教授曾经说：“勤能补拙是良训，一份辛苦一份才。”是的，不聪明没有瓜葛，只要勤奋学习就可补拙。只要勤奋学习，每天进步一点点，总有一天会成为飞过沧海横过大洋的海鸥。<br>
+
+　　美国物理学家富兰克林，是家中12个男孩中最小的。由于家境贫寒，12岁就到哥哥开的小印刷所去当学徒。他把排字当作学习的好机会，从不叫苦。在他阅读了许多书籍后，由最初化名练习写作，直至富兰克林的文章经常在报上发表受到人们称赞，到很有名气后，他的哥哥才知道这位“名家”竟是自己的弟弟。“滴自己的汗，吃自己的饭。自己的事，自己干。”这是郑板桥所言。学习是自己的事，只有要勤奋好学，才会有所收获。<br>
+
+　　学习是自己的事，是给自己补充能量，先有输入，才能输出。尤其在知识经济时代，知识更新的周期越来越短，只有不断地学习，才能不断摄取能量，才能适应社会的发展，才能生存下来。要善于思考，善于分析，善于整合;向成绩好、阅历高的人学习、多问，可以组成学问。也要向人品好、能力强、有亲和力的人弯下腰来。
+						</p>
+						<footer>
+							<a href="#" class="button">继续阅读</a>
+						</footer>
+					</article>
+
+				</div>
+
+			<!-- Features -->
+				<div class="wrapper style1">
+
+					<section id="features" class="container special">
+						<header>
+							<h2>精品文章</h2>
+							<p>优秀的程序员，就是每天都在学习的程序员</p>
+						</header>
+						<div class="row">
+							<article class="col-4 col-12-mobile special">
+								<a href="#" class="image featured"><img src="images/pic07.jpg" alt="" /></a>
+								<header>
+									<h3><a href="#">简单的ssh框架</a></h3>
+								</header>
+								<p>
+									ssh框架指的是Spring、struts、hibernate<br>如何快速架设一个使用ssh框架的项目呢
+								</p>
+							</article>
+							<article class="col-4 col-12-mobile special">
+								<a href="#" class="image featured"><img src="images/pic08.jpg" alt="" /></a>
+								<header>
+									<h3><a href="#">为什么使用接口</a></h3>
+								</header>
+								<p>
+									java为什么要用接口<br>用接口有什么好处吗？
+								</p>
+							</article>
+							<article class="col-4 col-12-mobile special">
+								<a href="#" class="image featured"><img src="images/pic09.jpg" alt="" /></a>
+								<header>
+									<h3><a href="#">eclipse集成J2EE开发环境</a></h3>
+								</header>
+								<p>
+									eclipse是一款非常好用的IDE<br>
+                                    那么如何集成J2EE环境来开发web项目呢？
+								</p>
+							</article>
+						</div>
+					</section>
+
+				</div>
+
+			<!-- Footer -->
+				<div id="footer">
+					<div class="container">
+						<div class="row">
+
+							<!-- Tweets -->
+								<section class="col-4 col-12-mobile">
+									<header>
+										<h2 class="icon brands fa-twitter circled"><span class="label">Tweets</span></h2>
+									</header>
+									<ul class="divided">
+										<li>
+											<article class="tweet">
+												演讲者的我
+												<span class="timestamp">5 分钟前</span>
+											</article>
+										</li>
+										<li>
+											<article class="tweet">
+												办活动的我
+												<span class="timestamp">30 分钟前</span>
+											</article>
+										</li>
+										<li>
+											<article class="tweet">
+												敲代码的我
+												<span class="timestamp">3 小时前</span>
+											</article>
+										</li>
+										<li>
+											<article class="tweet">
+												日常的我
+												<span class="timestamp">5 小时前</span>
+											</article>
+										</li>
+									</ul>
+								</section>
+
+							<!-- Posts -->
+								<section class="col-4 col-12-mobile">
+									<header>
+										<h2 class="icon solid fa-file circled"><span class="label">Posts</span></h2>
+									</header>
+									<ul class="divided">
+										<li>
+											<article class="post stub">
+												<header>
+													<h3><a href="#">JAVA基础知识</a></h3>
+												</header>
+												<span class="timestamp">3 小时前</span>
+											</article>
+										</li>
+										<li>
+											<article class="post stub">
+												<header>
+													<h3><a href="#">python基础知识</a></h3>
+												</header>
+												<span class="timestamp">6 小时前</span>
+											</article>
+										</li>
+										<li>
+											<article class="post stub">
+												<header>
+													<h3><a href="#">前端基本知识</a></h3>
+												</header>
+												<span class="timestamp">昨天</span>
+											</article>
+										</li>
+										<li>
+											<article class="post stub">
+												<header>
+													<h3><a href="#">把自己的项目放到网站上</a></h3>
+												</header>
+												<span class="timestamp">2 天前</span>
+											</article>
+										</li>
+									</ul>
+								</section>
+
+							<!-- Photos -->
+								<section class="col-4 col-12-mobile">
+									<header>
+										<h2 class="icon solid fa-camera circled"><span class="label">Photos</span></h2>
+									</header>
+									<div class="row gtr-25">
+										<div class="col-6">
+											<a href="#" class="image fit"><img src="images/pic10.jpg" alt="" /></a>
+										</div>
+										<div class="col-6">
+											<a href="#" class="image fit"><img src="images/pic11.jpg" alt="" /></a>
+										</div>
+										<div class="col-6">
+											<a href="#" class="image fit"><img src="images/pic12.jpg" alt="" /></a>
+										</div>
+										<div class="col-6">
+											<a href="#" class="image fit"><img src="images/pic13.jpg" alt="" /></a>
+										</div>
+										<div class="col-6">
+											<a href="#" class="image fit"><img src="images/pic14.jpg" alt="" /></a>
+										</div>
+										<div class="col-6">
+											<a href="#" class="image fit"><img src="images/pic15.jpg" alt="" /></a>
+										</div>
+									</div>
+								</section>
+
+						</div>
+						<hr />
+						<div class="row">
+							<div class="col-12">
+
+								<!-- Contact -->
+									<section class="contact">
+										<header>
+											<h3>分享一下我的网站？</h3>
+										</header>
+										<p>下面这些都可以分享哦</p>
+										<ul class="icons">
+											<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+											<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+											<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+											<li><a href="#" class="icon brands fa-pinterest"><span class="label">Pinterest</span></a></li>
+											<li><a href="#" class="icon brands fa-dribbble"><span class="label">Dribbble</span></a></li>
+											<li><a href="#" class="icon brands fa-linkedin-in"><span class="label">Linkedin</span></a></li>
+										</ul>
+									</section>
+
+								<!-- Copyright -->
+									<div class="copyright">
+										<ul class="menu">
+											<li>&copy; mythSun. All rights reserved.</li><li>Design: <a href="#">sunmengyan</a></li>
+										</ul>
+									</div>
+
+							</div>
+
+						</div>
+					</div>
+				</div>
+
 		</div>
-		<div class="aside fn-clear">
-			{% include wg-contact.html %}
-			{% include wg-project.html %}
-			{% include wg-other.html %}
-		</div>
-	</div>
-</section>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.dropotron.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
