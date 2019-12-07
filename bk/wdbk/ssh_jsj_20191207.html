@@ -1,0 +1,270 @@
+<!DOCTYPE HTML>
+<!--
+	Helios by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>jsp+servlet+javabean简单登录功能</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="../../assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="../../assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="right-sidebar is-preload">
+		<div id="page-wrapper">
+
+			<!-- Header -->
+				<div id="header">
+
+					<!-- Inner -->
+						<div class="inner">
+							<header>
+								<h1><a href="../../index.html" id="logo">mythSun</a></h1>
+							</header>
+						</div>
+
+					<!-- Nav -->
+						<nav id="nav">
+							<ul>
+								<li><a href="index.html">主页</a></li>
+								<li>
+									<a href="#">博客</a>
+									<ul>
+										<li><a href="#">日常点滴</a></li>
+										<li><a href="#">学习生涯</a></li>
+										<li><a href="#">走过的坑</a></li>
+										<li>
+											<a href="#">我的博客 &hellip;</a>
+											<ul>
+												<li><a href="#">JAVA</a></li>
+												<li><a href="#">前端</a></li>
+												<li><a href="#">框架</a></li>
+												<li><a href="#">数据库</a></li>
+											</ul>
+										</li>
+										<li><a href="#">生活琐碎</a></li>
+									</ul>
+								</li>
+								<li><a href="../../xm/list_xm.html">项目</a></li>
+								<li><a href="#">资源</a></li>
+								<li><a href="#">联系</a></li>
+							</ul>
+						</nav>
+
+				</div>
+
+			<!-- Main -->
+				<div class="wrapper style1">
+
+					<div class="container">
+						<div class="row gtr-200">
+							<div class="col-8 col-12-mobile" id="content">
+								<article id="main">
+									<header>
+										<h2>jsp+servlet+javabean简单登录功能</h2>
+										<p>
+大家好，我是mythSun。<br>
+很高兴能在这里和大家分享，做一个jsp+servlet+javabean简单登录功能。<br>
+话不多说，直接开始。
+
+									  </p>
+									</header>
+前期准备：<br>
+创建一个叫做pz 的数据库<br>
+里面有一个user表，字段id、uname、upwd，类型依次为int、varchar、varchar，大小自己看着设置就行。<br>
+开发环境myeclipse<br>
+<br>
+正文开始：<br>
+<br>
+第一步：<br>
+新建一个web项目<br>
+File---new—web project<br>
+输入你的项目名称<br>
+<br>
+第二步：<br>
+导入jar包，因为要连接数据库，所以导入“mysql-connector-java-5.0.8-bin.jar”这个jar包<br>
+导入方法：网上下载好该jar后，右击复制，然后找到项目WebRoot—WEB-INF—lib，右键粘贴，你会看到jar复制进来了，然后右击该jar，点击Build path—add Build path即可。<br>
+导入成功示意图<br>
+<img src="img/20191207a1.png" width="59%" height="59%"><br>
+第三步：<br>
+在WebRoot下新建三个jsp文件，分别是login.jsp  login_success.jsp  login_failed.jsp<br>
+下面是他们依次的代码<br>
+login.jsp：<br>
+<img src="img/20191207a2.png" width="59%" height="59%"><br>
+login_success.jsp<br>
+<img src="img/20191207a3.png" width="59%" height="59%"><br>
+Login_failed.jsp<br>
+<img src="img/20191207a4.png" width="59%" height="59%"><br>
+第四步：<br>
+写数据库连接类ConnDb.java这个javabean，该文件建在src下即可（就是简易demo，就不分包了）<br>
+代码如下<br>
+<img src="img/20191207a5.png" width="100%" height="100%"><br>
+<img src="img/20191207a6.png" width="100%" height="100%"><br>
+这个是简单连接数据库的工具类，如果数据库连接比较精通的，可以忽略我这个<br>
+<br>
+第五步：<br>
+书写业务类User.java这个javabean<br>
+<img src="img/20191207a7.png" width="100%" height="100%"><br>
+<img src="img/20191207a8.png" width="100%" height="100%"><br>
+同样，很懂数据库连接的操作的，这一步也可以替换成自己的<br>
+<br>
+第六步：<br>
+书写login.java这个servlet<br>
+直接上代码（这个是servlet因为继承了HttpServlet）<br>
+<img src="img/20191207a9.png" width="100%" height="100%"><br>
+<img src="img/20191207a10.png" width="100%" height="100%"><br>
+<img src="img/20191207a11.png" width="100%" height="100%"><br>
+解释一下：<br>
+这个可能出错，因为没有设置中文乱码解决办法，前台最好测试数字的姓名和密码，至于完善，交给看官您了。<br>
+User user=new User(name, pwd);这个就是初始化刚刚的javabean<br>
+<img src="img/20191207a12.png" width="100%" height="100%"><br>
+这个是判断是否登录<br>
+登陆成功转给login_success.jsp这个文件，失败同理。<br>
+<br>
+第七步：<br>
+服务器运行该项目，测试<br>
+<img src="img/20191207a13.png" width="100%" height="100%"><br>
+<img src="img/20191207a14.png" width="100%" height="100%"><br>
+<br>
+成功！<br>
+		
+
+
+
+
+
+
+
+								</article>
+							</div>
+							<div class="col-4 col-12-mobile" id="sidebar">
+								<hr class="first" />
+								<section>
+									<header>
+										<h3><a href="#">了解作者</a></h3>
+									</header>
+									<p>
+										mythSun，关键词“神秘”和“太阳”，我的神秘源于炽热的光芒。这个组合也巧妙的把我的姓名简写融合进去。
+                                        为什么要搭建这个博客平台呢，最开始是因为见到很多程序员都有自己的博客，那我也做一个吧。后来做着做着发现，好像还挺有意思
+                                        就坚持了下来。
+									</p>
+									<footer>
+										<a href="#" class="button">了解更多</a>
+									</footer>
+								</section>
+								<hr />
+								<section>
+									<header>
+										<h3><a href="#">博主推荐</a></h3>
+									</header>
+									<p>
+										来看看我推荐的博文吧
+									</p>
+									<div class="row gtr-50">
+										<div class="col-4">
+											<a href="#" class="image fit"><img src="../../images/pic10.jpg" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>简单搭建一个ssh</h4>
+											<p>
+												5分钟快速搭建一个ssh，你不来吗？
+											</p>
+										</div>
+										<div class="col-4">
+											<a href="#" class="image fit"><img src="../../images/pic11.jpg" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>eclipse配置J2EE开发环境</h4>
+											<p>
+												eclipse，用了都说好
+											</p>
+										</div>
+										<div class="col-4">
+											<a href="#" class="image fit"><img src="../../images/pic12.jpg" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>待写文章1</h4>
+											<p>
+												内容1
+											</p>
+										</div>
+										<div class="col-4">
+											<a href="#" class="image fit"><img src="../../images/pic13.jpg" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>待写文章1</h4>
+											<p>
+												内容1
+											</p>
+										</div>
+										<div class="col-4">
+											<a href="#" class="image fit"><img src="../../images/pic14.jpg" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>待写文章1</h4>
+											<p>
+												内容1
+											</p>
+										</div>
+									</div>
+									<footer>
+										<a href="#" class="button">去看更多</a>
+									</footer>
+								</section>
+							</div>
+						</div>
+						<hr />
+						<div class="row">
+							<article class="col-4 col-12-mobile special">
+								<a href="#" class="image featured"><img src="../../images/pic07.jpg" alt="" /></a>
+								<header>
+									<h3><a href="#">简单的ssh框架</a></h3>
+								</header>
+								<p>
+									ssh框架指的是Spring、struts、hibernate<br>如何快速架设一个使用ssh框架的项目呢
+								</p>
+							</article>
+							<article class="col-4 col-12-mobile special">
+								<a href="#" class="image featured"><img src="../../images/pic08.jpg" alt="" /></a>
+								<header>
+									<h3><a href="#">为什么使用接口</a></h3>
+								</header>
+								<p>
+									java为什么要用接口<br>用接口有什么好处吗？
+								</p>
+							</article>
+							<article class="col-4 col-12-mobile special">
+								<a href="#" class="image featured"><img src="../../images/pic09.jpg" alt="" /></a>
+								<header>
+									<h3><a href="#">eclipse集成J2EE开发环境</a></h3>
+								</header>
+								<p>
+									eclipse是一款非常好用的IDE<br>
+                                    那么如何集成J2EE环境来开发web项目呢？
+								</p>
+							</article>
+						</div>
+                        
+					</div>
+
+				</div>
+
+			<!-- Footer -->
+			<iframe id="iframe" width="100%" height="1200px" frameborder="0" scrolling="no" src="../../fo.html"></iframe>
+
+		</div>
+
+		<!-- Scripts -->
+			<script src="../../assets/js/jquery.min.js"></script>
+			<script src="../../assets/js/jquery.dropotron.min.js"></script>
+			<script src="../../assets/js/jquery.scrolly.min.js"></script>
+			<script src="../../assets/js/jquery.scrollex.min.js"></script>
+			<script src="../../assets/js/browser.min.js"></script>
+			<script src="../../assets/js/breakpoints.min.js"></script>
+			<script src="../../assets/js/util.js"></script>
+			<script src="../../assets/js/main.js"></script>
+
+	</body>
+</html>
