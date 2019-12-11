@@ -2,7 +2,7 @@
 
 <html>
 	<head>
-		<title>jsp+servlet+javabean简单登录功能</title>
+		<title>让applicationContext.xml文件在src下</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="../../assets/css/main.css" />
@@ -59,82 +59,44 @@
 							<div class="col-8 col-12-mobile" id="content">
 								<article id="main">
 									<header>
-										<h2>jsp+servlet+javabean简单登录功能</h2>
+										<h2>让applicationContext.xml文件在src下</h2>
 										<p>
 大家好，我是mythSun。<br>
-很高兴能在这里和大家分享，做一个jsp+servlet+javabean简单登录功能。<br>
+很高兴能在这里和大家分享，让applicationContext.xml文件在src下。<br>
 话不多说，直接开始。
 
 									  </p>
 									</header>
-前期准备：<br>
-创建一个叫做pz 的数据库<br>
-里面有一个user表，字段id、uname、upwd，类型依次为int、varchar、varchar，大小自己看着设置就行。<br>
-开发环境myeclipse<br>
+先讲原理，关键词：项目启动流程<br>
+1.启动一个WEB项目的时候,容器(如:Tomcat)会去读它的配置文件web.xml.<br>
+读两个节点: <listener></listener> 和 <context-param></context-param><br>
+2.紧接着,容器创建一个ServletContext(上下文),<br>
+这个WEB项目所有部分都将共享这个上下文<br>
+3.容器将<context-param></context-param>转化为键值对,并交给ServletContext<br>
+4.容器创建<listener></listener>中的类实例,即创建监听.<br>
+5.在监听中会有contextInitialized(ServletContextEvent args)初始化方法,在这个方法中获得<br>
+ServletContext = ServletContextEvent.getServletContext();<br>
+context-param的值 = ServletContext.getInitParameter("context-param的键");<br>
+6.得到这个context-param的值之后,你就可以做一些操作了.<br>
+注意,这个时候你的WEB项目还没有完全启动完成.<br>这个动作会比所有的Servlet都要早.<br>
+换句话说,这个时候,你对<context-param>中的键值做的操作,将在你的WEB项目完全启动之前被执行.<br>
+7.举例.你可能想在项目启动之前就打开数据库.<br>
+那么这里就可以在<context-param>中设置数据库的连接方式,在监听类中初始化数据库的连接.<br>
+8.这个监听是自己写的一个类,除了初始化方法,它还有销毁方法.<br>
+用于关闭应用前释放资源.比如说数据库连接的关闭.<br>
 <br>
-正文开始：<br>
+所以，解决方案就有了，<br>就是用<context-param></context-param><br>
 <br>
-第一步：<br>
-新建一个web项目<br>
-File---new—web project<br>
-输入你的项目名称<br>
+解决方案：<br>
+去web.xml里加如下代码：<br>
+<textarea rows="5" cols="100%" readonly="readonly">
+<context-param>
+     <param-name>contextConfigLocation</param-name>
+     <param-value>WEB-INF/classes/applicationContext.xml</param-value>
+</context-param>
+</textarea><br>
 <br>
-第二步：<br>
-导入jar包，因为要连接数据库，所以导入“mysql-connector-java-5.0.8-bin.jar”这个jar包<br>
-导入方法：网上下载好该jar后，右击复制，然后找到项目WebRoot—WEB-INF—lib，右键粘贴，你会看到jar复制进来了，然后右击该jar，点击Build path—add Build path即可。<br>
-导入成功示意图<br>
-<img src="img/20191207a1.png" width="59%" height="59%"><br>
-第三步：<br>
-在WebRoot下新建三个jsp文件，分别是login.jsp  login_success.jsp  login_failed.jsp<br>
-下面是他们依次的代码<br>
-login.jsp：<br>
-<img src="img/20191207a2.png" width="59%" height="59%"><br>
-login_success.jsp<br>
-<img src="img/20191207a3.png" width="59%" height="59%"><br>
-Login_failed.jsp<br>
-<img src="img/20191207a4.png" width="59%" height="59%"><br>
-第四步：<br>
-写数据库连接类ConnDb.java这个javabean，该文件建在src下即可（就是简易demo，就不分包了）<br>
-代码如下<br>
-<img src="img/20191207a5.png" width="100%" height="100%"><br>
-<img src="img/20191207a6.png" width="100%" height="100%"><br>
-这个是简单连接数据库的工具类，如果数据库连接比较精通的，可以忽略我这个<br>
-<br>
-第五步：<br>
-书写业务类User.java这个javabean<br>
-<img src="img/20191207a7.png" width="100%" height="100%"><br>
-<img src="img/20191207a8.png" width="100%" height="100%"><br>
-同样，很懂数据库连接的操作的，这一步也可以替换成自己的<br>
-<br>
-第六步：<br>
-书写login.java这个servlet<br>
-直接上代码（这个是servlet因为继承了HttpServlet）<br>
-<img src="img/20191207a9.png" width="100%" height="100%"><br>
-<img src="img/20191207a10.png" width="100%" height="100%"><br>
-<img src="img/20191207a11.png" width="100%" height="100%"><br>
-解释一下：<br>
-这个可能出错，因为没有设置中文乱码解决办法，前台最好测试数字的姓名和密码，至于完善，交给看官您了。<br>
-User user=new User(name, pwd);这个就是初始化刚刚的javabean<br>
-<img src="img/20191207a12.png" width="100%" height="100%"><br>
-这个是判断是否登录<br>
-登陆成功转给login_success.jsp这个文件，失败同理。<br>
-<br>
-第七步：<br>
-修改web.xml配置文件，注册servlet<br>
-<img src="img/20191207a99.png" width="100%" height="100%"><br>
-<img src="img/20191207a98.png" width="100%" height="100%"><br>
-
-第八步：<br>
-服务器运行该项目，测试<br>
-<img src="img/20191207a13.png" width="100%" height="100%"><br>
-<img src="img/20191207a14.png" width="100%" height="100%"><br>
-<br>
-成功！<br>
-		
-
-
-
-
+完成。<br>
 
 
 
