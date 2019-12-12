@@ -1,0 +1,229 @@
+﻿<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<title>让applicationContext.xml文件在src下</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="../assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="../assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="right-sidebar is-preload">
+		<div id="page-wrapper">
+
+			<!-- Header -->
+				<div id="header">
+
+					<!-- Inner -->
+						<div class="inner">
+							<header>
+								<h1><a href="../index.html" id="logo">mythSun</a></h1>
+							</header>
+						</div>
+
+					<!-- Nav -->
+						<nav id="nav">
+							<ul>
+								<li><a href="../index.html">主页</a></li>
+								<li>
+									<a href="#">博客</a>
+									<ul>
+										<li><a href="info.html">个人</a></li>
+										<li>
+											<a href="#">技术 &hellip;</a>
+											<ul>
+												<li><a href="list_java.html">JAVA</a></li>
+												<li><a href="list_qd.html">前端</a></li>
+												<li><a href="list_fm.html">框架</a></li>
+												<li><a href="list_db.html">数据库</a></li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+								<li><a href="list_xm.html">项目</a></li>
+								<li><a href="list_zy.html">资源</a></li>
+								<li><a href="list_lx.html">联系</a></li>
+							</ul>
+						</nav>
+
+				</div>
+
+			<!-- Main -->
+				<div class="wrapper style1">
+
+					<div class="container">
+						<div class="row gtr-200">
+							<div class="col-8 col-12-mobile" id="content">
+								<article id="main">
+									<header>
+										<h2>让applicationContext.xml文件在src下</h2>
+										<p>
+大家好，我是mythSun。<br>
+很高兴能在这里和大家分享，让applicationContext.xml文件在src下。<br>
+话不多说，直接开始。
+
+									  </p>
+									</header>
+先讲原理，关键词：项目启动流程<br>
+1.启动一个WEB项目的时候,容器(如:Tomcat)会去读它的配置文件web.xml.<br>
+读两个节点: <listener></listener> 和 <context-param></context-param><br>
+2.紧接着,容器创建一个ServletContext(上下文),<br>
+这个WEB项目所有部分都将共享这个上下文<br>
+3.容器将<context-param></context-param>转化为键值对,并交给ServletContext<br>
+4.容器创建<listener></listener>中的类实例,即创建监听.<br>
+5.在监听中会有contextInitialized(ServletContextEvent args)初始化方法,在这个方法中获得<br>
+ServletContext = ServletContextEvent.getServletContext();<br>
+context-param的值 = ServletContext.getInitParameter("context-param的键");<br>
+6.得到这个context-param的值之后,你就可以做一些操作了.<br>
+注意,这个时候你的WEB项目还没有完全启动完成.<br>这个动作会比所有的Servlet都要早.<br>
+换句话说,这个时候,你对<context-param>中的键值做的操作,将在你的WEB项目完全启动之前被执行.<br>
+7.举例.你可能想在项目启动之前就打开数据库.<br>
+那么这里就可以在<context-param>中设置数据库的连接方式,在监听类中初始化数据库的连接.<br>
+8.这个监听是自己写的一个类,除了初始化方法,它还有销毁方法.<br>
+用于关闭应用前释放资源.比如说数据库连接的关闭.<br>
+<br>
+所以，解决方案就有了，<br>就是用<context-param></context-param><br>
+<br>
+解决方案：<br>
+去web.xml里加如下代码：<br>
+<textarea rows="5" cols="100%" readonly>
+<context-param>
+     <param-name>contextConfigLocation</param-name>
+     <param-value>WEB-INF/classes/applicationContext.xml</param-value>
+</context-param>
+</textarea><br>
+<br>
+完成。<br>
+
+
+
+								</article>
+							</div>
+							<div class="col-4 col-12-mobile" id="sidebar">
+								<hr class="first" />
+								<section>
+									<header>
+										<h3><a href="info.html">了解作者</a></h3>
+									</header>
+									<p>
+										mythSun，关键词“神秘”和“太阳”，我的神秘源于炽热的光芒。这个组合也巧妙的把我的姓名简写融合进去。
+                                        为什么要搭建这个博客平台呢，最开始是因为见到很多程序员都有自己的博客，那我也做一个吧。后来做着做着发现，好像还挺有意思
+                                        就坚持了下来。
+									</p>
+									<footer>
+										<a href="info.html" class="button">了解更多</a>
+									</footer>
+								</section>
+								<hr />
+								<section>
+									<header>
+										<h3>博主推荐</h3>
+									</header>
+									<p>
+										来看看我推荐的博文吧
+									</p>
+									<div class="row gtr-50">
+										<div class="col-4">
+											<a href="ssh_20191207.html" class="image fit"><img src="img/2019120727.png" width="175" height="139" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>简单搭建ssh框架实现登录功能</h4>
+											<p>
+												5分钟快速搭建ssh框架的项目
+											</p>
+										</div>
+										<div class="col-4">
+											<a href="ssh_jsj_20191207.html" class="image fit"><img src="img/20191207a13.png" width="175" height="139" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>简单使用jsp+servlet+javabean实现登录功能</h4>
+											<p>
+												用实战教你用jsp+servlet+javabean
+											</p>
+										</div>
+										<div class="col-4">
+											<a href="qd_20191208.html" class="image fit"><img src="img/201912081.png" width="175" height="139" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>如何让textarea不可编辑只可读（博客常用）</h4>
+											<p>
+												博客里的代码块重点标记
+											</p>
+										</div>
+										<div class="col-4">
+											<a href="ssh_201912111.html" class="image fit"><img src="img/201912111.png" width="175" height="139" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>spring控制反转</h4>
+											<p>
+												都说控制反转好，那么这个东西是什么呢
+											</p>
+										</div>
+										<div class="col-4">
+											<a href="ssh_201912112.html" class="image fit"><img src="img/201912112.png" width="175" height="139" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>如何让applicationContext配置文件在src下</h4>
+											<p>
+												其实配置文件本身就是标记，真正有效的还是代码
+											</p>
+										</div>
+									</div>
+									<footer>
+										<a href="list_java.html" class="button">去看更多</a>
+									</footer>
+								</section>
+							</div>
+						</div>
+						<hr />
+						<div class="row">
+							<article class="col-4 col-12-mobile special">
+								<a href="ssh_20191207.html" class="image featured"><img src="img/2019120727.png" width="368px" height="256px" alt="" /></a>
+								<header>
+									<h3><a href="ssh_20191207.html">简单的ssh框架</a></h3>
+								</header>
+								<p>
+									ssh框架指的是Spring、struts、hibernate<br>如何快速架设一个使用ssh框架的项目呢
+								</p>
+							</article>
+							<article class="col-4 col-12-mobile special">
+								<a href="ssh_jsj_20191207.html" class="image featured"><img src="img/20191207a13.png" width="368px" height="256px" alt="" /></a>
+								<header>
+									<h3><a href="ssh_jsj_20191207.html">简单使用jsp+servlet+javabean实现登录功能</a></h3>
+								</header>
+								<p>
+									用实战教你用<br>jsp+servlet+javabean
+								</p>
+							</article>
+							<article class="col-4 col-12-mobile special">
+								<a href="qd_20191208.html" class="image featured"><img src="img/201912081.png" width="368px" height="256px" alt="" /></a>
+								<header>
+									<h3><a href="qd_20191208.html">如何让textarea不可编辑只可读（博客常用）</a></h3>
+								</header>
+								<p>
+									博客里的代码块重点标记
+								</p>
+							</article>
+						</div>
+                        
+					</div>
+
+				</div>
+
+			<!-- Footer -->
+			<iframe id="iframe" width="100%" height="1200px" frameborder="0" scrolling="no" src="../fo.html"></iframe>
+
+		</div>
+
+		<!-- Scripts -->
+			<script src="../assets/js/jquery.min.js"></script>
+			<script src="../assets/js/jquery.dropotron.min.js"></script>
+			<script src="../assets/js/jquery.scrolly.min.js"></script>
+			<script src="../assets/js/jquery.scrollex.min.js"></script>
+			<script src="../assets/js/browser.min.js"></script>
+			<script src="../assets/js/breakpoints.min.js"></script>
+			<script src="../assets/js/util.js"></script>
+			<script src="../assets/js/main.js"></script>
+
+	</body>
+</html>

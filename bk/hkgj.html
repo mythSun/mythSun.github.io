@@ -1,0 +1,238 @@
+﻿<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<title>python做的小黑客工具</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="../assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="../assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="right-sidebar is-preload">
+		<div id="page-wrapper">
+
+			<!-- Header -->
+				<div id="header">
+
+					<!-- Inner -->
+						<div class="inner">
+							<header>
+								<h1><a href="../index.html" id="logo">mythSun</a></h1>
+							</header>
+						</div>
+
+					<!-- Nav -->
+						<nav id="nav">
+							<ul>
+								<li><a href="../index.html">主页</a></li>
+								<li>
+									<a href="#">博客</a>
+									<ul>
+										<li><a href="info.html">个人</a></li>
+										<li>
+											<a href="#">技术 &hellip;</a>
+											<ul>
+												<li><a href="list_java.html">JAVA</a></li>
+												<li><a href="list_qd.html">前端</a></li>
+												<li><a href="list_fm.html">框架</a></li>
+												<li><a href="list_db.html">数据库</a></li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+								<li><a href="list_xm.html">项目</a></li>
+								<li><a href="list_zy.html">资源</a></li>
+								<li><a href="list_lx.html">联系</a></li>
+							</ul>
+						</nav>
+
+
+				</div>
+
+			<!-- Main -->
+				<div class="wrapper style1">
+
+					<div class="container">
+						<div class="row gtr-200">
+							<div class="col-8 col-12-mobile" id="content">
+								<article id="main">
+									<header>
+										<h2>python做的小黑客工具</h2>
+										<p>
+大家好，我是mythSun。<br>
+很高兴能在这里和大家分享，python做的几个小黑客工具。<br>
+话不多说，直接开始。
+
+									  </p>
+									</header>
+                                    
+给大家分享俩工具，用python写的。<br>
+<img src="img/201912121.png" width="100%" height="100%"> <br>
+这是这个工具，根据名字我们可以看出是用的“钩子”。<br>
+那么什么是钩子呢？他的作用很简单就是相当于一个拦截器，所有你对计算机的输入，都会有一次拦截，<br>
+只不过拦截后，只是记录了你输入什么，不会做别的操作。<br>
+那这样能做啥呢？比如我下面这个举例。<br>
+首先我打开了这个exe文件，然后去浏览器搜索“QQ邮箱”，<br>
+然后登录了邮箱，过程中用了账号密码登录。<br>
+然后-----在C盘生成了一个txt文件，如下，<br>
+这个记录了我整个过程所有的键盘输入，<br>
+也就是说，我的QQ账号和密码，都被这个文件保存了。<br>
+<img src="img/201912122.png" width="100%" height="100%"> <br>
+那么是不是这样呢？我们打开文件看一下。<br>
+<img src="img/201912123.png" width="100%" height="100%"> <br>
+可以看到，我在“搜狗高速浏览器—主页”上输入了QQ YOUXIANG<br>
+后来在“登录QQ邮箱”界面输入了31……（我的账号）……..IY（我的密码）<br>
+如果在设置一个自动发邮件给你的邮箱，附件就是这个文件，<br>
+想一下是不是很可怕，你一天的计算机使用几乎都被监控了。<br>
+当然这样有个好处，你忘记密码了，或许黑客哪里有记录，哈哈哈哈哈。<br>
+既然上面提到了自动发邮箱这个，那顺路把这个工具也介绍一下吧<br>
+<img src="img/201912124.png" width="100%" height="100%"> <br>
+这个工具就是自动发邮箱的，这个功能很好做，<br>
+网上搜搜，用俩模块就能搞定，当然你得先申请一个能自动发邮件的163邮箱。<br>
+具体演示就不演示了，没啥好演示的。<br>
+需要这两个工具的联系我要就行，当然你害怕我这个不安全，<br>
+可以跟我要源码，研究透了，自己转成exe，然后使用也行。<br>
+证明一下有源码：<br>
+<img src="img/201912125.png" width="100%" height="100%"> <br>
+别的“killqq”是杀掉qq进程的，杀掉了之后，<br>
+用户会重新登录，发现自己的qq账号密码消失了，<br>
+只能重新输入，这不就更轻易获取qq信息了吗，后来做完了发现，<br>
+qq的客户端早就做了防钩子，只能拦截一堆字符串，不是密码，白写了这个模块。<br>
+<img src="img/201912126.png" width="100%" height="100%"> <br>
+<br>
+注意：<br>
+只做学习，不要做违法乱纪的事！<br>
+只做学习，不要做违法乱纪的事！<br>
+只做学习，不要做违法乱纪的事！<br>
+
+
+							  </article>
+							</div>
+							<div class="col-4 col-12-mobile" id="sidebar">
+								<hr class="first" />
+								<section>
+									<header>
+										<h3><a href="info.html">了解作者</a></h3>
+									</header>
+									<p>
+										mythSun，关键词“神秘”和“太阳”，我的神秘源于炽热的光芒。这个组合也巧妙的把我的姓名简写融合进去。
+                                        为什么要搭建这个博客平台呢，最开始是因为见到很多程序员都有自己的博客，那我也做一个吧。后来做着做着发现，好像还挺有意思
+                                        就坚持了下来。
+									</p>
+									<footer>
+										<a href="info.html" class="button">了解更多</a>
+									</footer>
+								</section>
+								<hr />
+								<section>
+									<header>
+										<h3>博主推荐</h3>
+									</header>
+									<p>
+										来看看我推荐的博文吧
+									</p>
+									<div class="row gtr-50">
+										<div class="col-4">
+											<a href="ssh_20191207.html" class="image fit"><img src="img/2019120727.png" width="175" height="139" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>简单搭建ssh框架实现登录功能</h4>
+											<p>
+												5分钟快速搭建ssh框架的项目
+											</p>
+										</div>
+										<div class="col-4">
+											<a href="ssh_jsj_20191207.html" class="image fit"><img src="img/20191207a13.png" width="175" height="139" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>简单使用jsp+servlet+javabean实现登录功能</h4>
+											<p>
+												用实战教你用jsp+servlet+javabean
+											</p>
+										</div>
+										<div class="col-4">
+											<a href="qd_20191208.html" class="image fit"><img src="img/201912081.png" width="175" height="139" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>如何让textarea不可编辑只可读（博客常用）</h4>
+											<p>
+												博客里的代码块重点标记
+											</p>
+										</div>
+										<div class="col-4">
+											<a href="ssh_201912111.html" class="image fit"><img src="img/201912111.png" width="175" height="139" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>spring控制反转</h4>
+											<p>
+												都说控制反转好，那么这个东西是什么呢
+											</p>
+										</div>
+										<div class="col-4">
+											<a href="ssh_201912112.html" class="image fit"><img src="img/201912112.png" width="175" height="139" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>如何让applicationContext配置文件在src下</h4>
+											<p>
+												其实配置文件本身就是标记，真正有效的还是代码
+											</p>
+										</div>
+									</div>
+									<footer>
+										<a href="list_java.html" class="button">去看更多</a>
+									</footer>
+								</section>
+							</div>
+						</div>
+						<hr />
+						<div class="row">
+							<article class="col-4 col-12-mobile special">
+								<a href="ssh_20191207.html" class="image featured"><img src="img/2019120727.png" width="368px" height="256px" alt="" /></a>
+								<header>
+									<h3><a href="ssh_20191207.html">简单的ssh框架</a></h3>
+								</header>
+								<p>
+									ssh框架指的是Spring、struts、hibernate<br>如何快速架设一个使用ssh框架的项目呢
+								</p>
+							</article>
+							<article class="col-4 col-12-mobile special">
+								<a href="ssh_jsj_20191207.html" class="image featured"><img src="img/20191207a13.png" width="368px" height="256px" alt="" /></a>
+								<header>
+									<h3><a href="ssh_jsj_20191207.html">简单使用jsp+servlet+javabean实现登录功能</a></h3>
+								</header>
+								<p>
+									用实战教你用<br>jsp+servlet+javabean
+								</p>
+							</article>
+							<article class="col-4 col-12-mobile special">
+								<a href="qd_20191208.html" class="image featured"><img src="img/201912081.png" width="368px" height="256px" alt="" /></a>
+								<header>
+									<h3><a href="qd_20191208.html">如何让textarea不可编辑只可读（博客常用）</a></h3>
+								</header>
+								<p>
+									博客里的代码块重点标记
+								</p>
+							</article>
+						</div>
+                        
+					</div>
+
+				</div>
+
+			<!-- Footer -->
+			<iframe id="iframe" width="100%" height="1200px" frameborder="0" scrolling="no" src="../fo.html"></iframe>
+
+		</div>
+
+		<!-- Scripts -->
+			<script src="../assets/js/jquery.min.js"></script>
+			<script src="../assets/js/jquery.dropotron.min.js"></script>
+			<script src="../assets/js/jquery.scrolly.min.js"></script>
+			<script src="../assets/js/jquery.scrollex.min.js"></script>
+			<script src="../assets/js/browser.min.js"></script>
+			<script src="../assets/js/breakpoints.min.js"></script>
+			<script src="../assets/js/util.js"></script>
+			<script src="../assets/js/main.js"></script>
+
+	</body>
+</html>

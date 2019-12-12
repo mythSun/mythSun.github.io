@@ -1,0 +1,276 @@
+﻿<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<title>jvm基础讲解</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="../assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="../assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="right-sidebar is-preload">
+		<div id="page-wrapper">
+
+			<!-- Header -->
+				<div id="header">
+
+					<!-- Inner -->
+						<div class="inner">
+							<header>
+								<h1><a href="../index.html" id="logo">mythSun</a></h1>
+							</header>
+						</div>
+
+					<!-- Nav -->
+						<nav id="nav">
+							<ul>
+								<li><a href="../index.html">主页</a></li>
+								<li>
+									<a href="#">博客</a>
+									<ul>
+										<li><a href="info.html">个人</a></li>
+										<li>
+											<a href="#">技术 &hellip;</a>
+											<ul>
+												<li><a href="list_java.html">JAVA</a></li>
+												<li><a href="list_qd.html">前端</a></li>
+												<li><a href="list_fm.html">框架</a></li>
+												<li><a href="list_db.html">数据库</a></li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+								<li><a href="list_xm.html">项目</a></li>
+								<li><a href="list_zy.html">资源</a></li>
+								<li><a href="list_lx.html">联系</a></li>
+							</ul>
+						</nav>
+
+
+				</div>
+
+			<!-- Main -->
+				<div class="wrapper style1">
+
+					<div class="container">
+						<div class="row gtr-200">
+							<div class="col-8 col-12-mobile" id="content">
+								<article id="main">
+									<header>
+										<h2>jvm基础讲解</h2>
+										<p>
+大家好，我是mythSun。<br>
+很高兴能在这里和大家分享，jvm基础讲解。<br>
+话不多说，直接开始。
+
+									  </p>
+									</header>
+
+
+本篇开始先声明，因为jvm是自己查资料研究的，<br>
+所以涉及到相关的信息，怕误导他人，一大部分是摘录的。<br>
+那我这篇文章的意义何在，jvm这东西自学有些费劲，<br>
+从我这个看起，更能接受，因为我也是从零学起，<br>
+而且最后加入了更容易理解的部分，若有不当之处，请联系我加以斧正。<br>
+<br>
+JVM被分为三个主要的子系统<br>
+<br>
+（1）类加载器子系统（2）运行时数据区（3）执行引擎<br>
+<br>
+类加载器子系统：Java的动态类加载功能是由类加载器子系统处理。<br>
+当它在运行时（不是编译时）首次引用一个类时，它加载、链接并初始化该类文件。<br>
+加载<br>
+类加载器子系统分为：<br>
+启动类加载器、拓展类加载器、应用程序类加载器<br>
+启动类加载器负责加载程序里import的类的jar（优先）<br>
+拓展类加载器负责加载lib文件夹下导入的jar<br>
+应用程序类加载器负责加载应用程序级别类路径<br>
+链接<br>
+链接会校验、准备、解析<br>
+校验：看生成的字节码是否正确<br>
+准备：分配内存并初始化默认值给所有的静态变量<br>
+解析：所有符号内存引用被方法区(Method Area)的原始引用所替代<br>
+扩充<br>
+符号引用，先定义变量然后调用，是符号引用（先定义类再调用类也是如此）<br>
+直接引用。就是直接能找到被引用事物<br>
+初始化<br>
+这是类加载的最后阶段，这里所有的静态变量会被赋初始值, 并且静态块将被执行。<br>
+<br>
+运行时数据区：<br>
+运行时数据区分为方法区、堆区、 栈区、 PC寄存器、本地方法栈<br>
+方法区（Method Area）：<br>
+所有类级别数据将被存储在这里，包括静态变量。每个JVM只有一个方法区，它是一个共享的资源。<br>
+堆区（Heap Area）<br>
+所有的对象和它们相应的实例变量以及数组将被存储在这里。<br>
+每个JVM同样只有一个堆区。由于方法区和堆区的内存由多个线程共享，所以存储的数据不是线程安全的。<br>
+栈区（Stack Area）<br>
+对每个线程会单独创建一个运行时栈。<br>
+对每个函数呼叫会在栈内存生成一个栈帧(Stack Frame)。<br>
+所有的局部变量将在栈内存中创建。栈区是线程安全的，因为它不是一个共享资源。栈帧被分为三个子实体：<br>
+a 局部变量数组 – 包含多少个与方法相关的局部变量并且相应的值将被存储在这里。<br>
+b 操作数栈 – 如果需要执行任何中间操作，操作数栈作为运行时工作区去执行指令。<br>
+c 帧数据 – 方法的所有符号都保存在这里。在任意异常的情况下，catch块的信息将会被保存在帧数据里面。<br>
+<img src="img/20191212x1.png" width="100%" height="100%"><br>
+ PC寄存器<br>
+每个线程都有一个单独的PC寄存器来保存当前执行指令的地址，一旦该指令被执行，pc寄存器会被更新至下条指令的地址。<br>
+本地方法栈<br>
+本地方法栈保存本地方法信息。对每一个线程，将创建一个单独的本地方法栈。<br>
+<br>
+执行引擎<br>
+分配给运行时数据区的字节码将由执行引擎执行。执行引擎读取字节码并逐段执行。<br>
+解释器:<br>
+解释器能快速的解释字节码，但执行却很慢。 解释器的缺点就是,当一个方法被调用多次，每次都需要重新解释。<br>
+编译器<br>
+JIT编译器消除了解释器的缺点。执行引擎利用解释器转换字节码，但如果是重复的代码则使用JIT编译器将全部字节码编译成本机代码。<br>
+本机代码将直接用于重复的方法调用，这提高了系统的性能。<br>
+垃圾回收器:<br>
+收集并删除未引用的对象。<br>
+可以通过调用"System.gc()"来触发垃圾回收，但并不保证会确实进行垃圾回收。<br>
+JVM的垃圾回收只收集哪些由new关键字创建的对象。<br>
+所以，如果不是用new创建的对象，你可以使用finalize函数来执行清理。<br>
+Java本地接口 (JNI): JNI 会与本地方法库进行交互并提供执行引擎所需的本地库。<br>
+本地方法库:它是一个执行引擎所需的本地库的集合。<br>
+总流程图<br>
+<img src="img/20191212x2.png" width="100%" height="100%"><br>
+加载子系统<br>
+<img src="img/20191212x3.png" width="100%" height="100%"><br>
+运行时数据区<br>
+<img src="img/20191212x4.png" width="100%" height="100%"><br>
+<br>
+<br>
+<br>
+
+
+
+
+
+								</article>
+							</div>
+							<div class="col-4 col-12-mobile" id="sidebar">
+								<hr class="first" />
+								<section>
+									<header>
+										<h3><a href="info.html">了解作者</a></h3>
+									</header>
+									<p>
+										mythSun，关键词“神秘”和“太阳”，我的神秘源于炽热的光芒。这个组合也巧妙的把我的姓名简写融合进去。
+                                        为什么要搭建这个博客平台呢，最开始是因为见到很多程序员都有自己的博客，那我也做一个吧。后来做着做着发现，好像还挺有意思
+                                        就坚持了下来。
+									</p>
+									<footer>
+										<a href="info.html" class="button">了解更多</a>
+									</footer>
+								</section>
+								<hr />
+								<section>
+									<header>
+										<h3>博主推荐</h3>
+									</header>
+									<p>
+										来看看我推荐的博文吧
+									</p>
+									<div class="row gtr-50">
+										<div class="col-4">
+											<a href="ssh_20191207.html" class="image fit"><img src="img/2019120727.png" width="175" height="139" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>简单搭建ssh框架实现登录功能</h4>
+											<p>
+												5分钟快速搭建ssh框架的项目
+											</p>
+										</div>
+										<div class="col-4">
+											<a href="ssh_jsj_20191207.html" class="image fit"><img src="img/20191207a13.png" width="175" height="139" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>简单使用jsp+servlet+javabean实现登录功能</h4>
+											<p>
+												用实战教你用jsp+servlet+javabean
+											</p>
+										</div>
+										<div class="col-4">
+											<a href="qd_20191208.html" class="image fit"><img src="img/201912081.png" width="175" height="139" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>如何让textarea不可编辑只可读（博客常用）</h4>
+											<p>
+												博客里的代码块重点标记
+											</p>
+										</div>
+										<div class="col-4">
+											<a href="ssh_201912111.html" class="image fit"><img src="img/201912111.png" width="175" height="139" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>spring控制反转</h4>
+											<p>
+												都说控制反转好，那么这个东西是什么呢
+											</p>
+										</div>
+										<div class="col-4">
+											<a href="ssh_201912112.html" class="image fit"><img src="img/201912112.png" width="175" height="139" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>如何让applicationContext配置文件在src下</h4>
+											<p>
+												其实配置文件本身就是标记，真正有效的还是代码
+											</p>
+										</div>
+									</div>
+									<footer>
+										<a href="list_java.html" class="button">去看更多</a>
+									</footer>
+								</section>
+							</div>
+						</div>
+						<hr />
+						<div class="row">
+							<article class="col-4 col-12-mobile special">
+								<a href="ssh_20191207.html" class="image featured"><img src="img/2019120727.png" width="368px" height="256px" alt="" /></a>
+								<header>
+									<h3><a href="ssh_20191207.html">简单的ssh框架</a></h3>
+								</header>
+								<p>
+									ssh框架指的是Spring、struts、hibernate<br>如何快速架设一个使用ssh框架的项目呢
+								</p>
+							</article>
+							<article class="col-4 col-12-mobile special">
+								<a href="ssh_jsj_20191207.html" class="image featured"><img src="img/20191207a13.png" width="368px" height="256px" alt="" /></a>
+								<header>
+									<h3><a href="ssh_jsj_20191207.html">简单使用jsp+servlet+javabean实现登录功能</a></h3>
+								</header>
+								<p>
+									用实战教你用<br>jsp+servlet+javabean
+								</p>
+							</article>
+							<article class="col-4 col-12-mobile special">
+								<a href="qd_20191208.html" class="image featured"><img src="img/201912081.png" width="368px" height="256px" alt="" /></a>
+								<header>
+									<h3><a href="qd_20191208.html">如何让textarea不可编辑只可读（博客常用）</a></h3>
+								</header>
+								<p>
+									博客里的代码块重点标记
+								</p>
+							</article>
+						</div>
+                        
+					</div>
+
+				</div>
+
+			<!-- Footer -->
+			<iframe id="iframe" width="100%" height="1200px" frameborder="0" scrolling="no" src="../fo.html"></iframe>
+
+		</div>
+
+		<!-- Scripts -->
+			<script src="../assets/js/jquery.min.js"></script>
+			<script src="../assets/js/jquery.dropotron.min.js"></script>
+			<script src="../assets/js/jquery.scrolly.min.js"></script>
+			<script src="../assets/js/jquery.scrollex.min.js"></script>
+			<script src="../assets/js/browser.min.js"></script>
+			<script src="../assets/js/breakpoints.min.js"></script>
+			<script src="../assets/js/util.js"></script>
+			<script src="../assets/js/main.js"></script>
+
+	</body>
+</html>

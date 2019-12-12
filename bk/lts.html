@@ -1,0 +1,551 @@
+﻿<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<title>socket实现局域网聊天室</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="../assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="../assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="right-sidebar is-preload">
+		<div id="page-wrapper">
+
+			<!-- Header -->
+				<div id="header">
+
+					<!-- Inner -->
+						<div class="inner">
+							<header>
+								<h1><a href="../index.html" id="logo">mythSun</a></h1>
+							</header>
+						</div>
+
+					<!-- Nav -->
+						<nav id="nav">
+							<ul>
+								<li><a href="../index.html">主页</a></li>
+								<li>
+									<a href="#">博客</a>
+									<ul>
+										<li><a href="info.html">个人</a></li>
+										<li>
+											<a href="#">技术 &hellip;</a>
+											<ul>
+												<li><a href="list_java.html">JAVA</a></li>
+												<li><a href="list_qd.html">前端</a></li>
+												<li><a href="list_fm.html">框架</a></li>
+												<li><a href="list_db.html">数据库</a></li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+								<li><a href="list_xm.html">项目</a></li>
+								<li><a href="list_zy.html">资源</a></li>
+								<li><a href="list_lx.html">联系</a></li>
+							</ul>
+						</nav>
+
+
+				</div>
+
+			<!-- Main -->
+				<div class="wrapper style1">
+
+					<div class="container">
+						<div class="row gtr-200">
+							<div class="col-8 col-12-mobile" id="content">
+								<article id="main">
+									<header>
+										<h2>socket实现局域网聊天室</h2>
+										<p>
+大家好，我是mythSun。<br>
+很高兴能在这里和大家分享，socket实现局域网聊天室。<br>
+话不多说，直接开始。
+
+									  </p>
+									</header>
+
+
+Java的socket做一个简单的聊天室<br>
+对于socket，相信同学们不陌生了，那么今天，实现一个局域网内相互通信的实战。<br>
+先给大家看演示。最后贴核心代码，需要整个代码的同学，可以联系我。<br>
+先讲一下原理<br>
+对于Java Socket编程而言，有两个概念，<br>
+一个是ServerSocket，一个是Socket。<br>
+服务端和客户端之间通过Socket建立连接，之后它们就可以进行通信了。<br>
+首先ServerSocket将在服务端监听某个端口，当发现客户端有Socket来试图连接它时，<br>
+它会accept该Socket的连接请求，同时在服务端建立一个对应的Socket与之进行通信。<br>
+这样就有两个Socket了，客户端和服务端各一个。<br>
+对于Socket之间的通信其实很简单，服务端往Socket的输出流里面写东西，<br>
+客户端就可以通过Socket的输入流读取对应的内容。<br>
+Socket与Socket之间是双向连通的，所以客户端也可以往对应的Socket输出流里面写东西，<br>
+然后服务端对应的Socket的输入流就可以读出对应的内容。<br>
+<br>
+首先开启服务器，不开启服务器，想聊天都没地。<br>
+<br>
+<img src="img/20191212y1.png" width="100%" height="100%"><br>
+然后输入用户名“张三”连接服务器。<br>
+可以看到用户登录的信息已经被服务器收到了，当然可以做个数据库，验证登录，这就更像一个聊天室了。<br>
+<img src="img/20191212y2.png" width="100%" height="100%"><br>
+发条消息，看服务器有没有收到，发送给“李四”，可以看到服务器已经收到了。<br>
+因为没开李四的客户端，不然李四那边，也是会收到这个的。<br>
+<img src="img/20191212y3.png" width="100%" height="100%"><br>
+这是项目的分包，上面是服务器的包，下面是客户端的包。<br>
+<img src="img/20191212y4.png" width="100%" height="100%"><br>
+核心代码：<br>
+首先服务器要有个方法，一直执行接收消息。<br>
+<textarea rows="30" cols="100%" readonly="readonly">
+public void run() {
+		while (true) {
+			try {				
+				if ((msg=in.readLine())!=null) {
+					String string=jTextArea.getText().toString()+"\n";
+					JSONObject jsonObject=JSONObject.fromObject(msg);
+					String from=jsonObject.getString("from");
+					String to=jsonObject.getString("to");
+					String message=jsonObject.getString("msg");
+					jTextArea.setText(string+"用户"+from+"："+message+"   发送给"+to);
+					for (SocketAndName socket2 : StartSerThread.socketList) {
+						if (socket2.getName().equals(to)) {
+							PrintWriter out=null;
+							try {
+								out=new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket2.getSocket().getOutputStream(), "gb2312")), true);
+								out.println(msg);
+							} catch (UnsupportedEncodingException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+						
+					}
+				}
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+</textarea><br>
+然后服务器还要有个分发的方法，让消息去往相应的客户端<br>
+<textarea rows="30" cols="100%" readonly="readonly">
+public void send(String string) {
+			for (SocketAndName socket2 : socketList) {
+				PrintWriter out=null;
+				try {
+					out=new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket2.getSocket().getOutputStream(), "gb2312")), true);
+					out.println(string);
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+		}
+</textarea><br>
+绘制一个服务器的前端<br>
+<textarea rows="30" cols="100%" readonly="readonly">
+package testScoketSer;
+
+import java.awt.Font;
+import java.awt.TextField;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JTextArea;
+
+public class TestSerMain {
+
+		//1
+		static JFrame frame=null;
+		static JTextArea label;
+		static TextField textField;
+		//2
+		static StartSerThread startSerThread;
+
+		public static void main(String[]arg1) {
+			//1
+		    frame=new JFrame("服务器");
+			frame.setBounds(600, 50, 500, 650);
+			frame.setLayout(null);
+			Font font=new Font(null, 0, 16);
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			JButton button=new JButton("开启服务器");
+			button.setFont(font);
+			button.setBounds(100, 50, 300, 50);
+			//2
+			button.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					
+				    startSerThread=new StartSerThread(label);
+				    startSerThread.start();
+				}
+			});
+			//1
+			frame.add(button);
+			label=new JTextArea("");
+			label.setLineWrap(true);	
+			label.setEditable(false);
+			label.setAutoscrolls(true);
+			label.setFont(font);
+			label.setBounds(100, 110, 200, 200);
+			frame.add(label);
+			textField=new TextField();
+			textField.setFont(font);
+			textField.setBounds(100, 320, 150, 50);
+			frame.add(textField);	
+			JButton buttonE=new JButton("发送");
+			buttonE.setFont(font);
+			buttonE.setBounds(260, 320, 80, 50);
+			
+			buttonE.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					//testThread.isOpen=false;		
+					startSerThread.send(textField.getText().toString());
+
+				}
+			});
+			//
+			frame.add(buttonE);
+			frame.setVisible(true);
+		}
+
+}
+</textarea><br>
+绘制一个客户端的前端<br>
+<textarea rows="30" cols="100%" readonly="readonly">
+package testSocketClient;
+
+import java.awt.Font;
+import java.awt.TextField;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JTextArea;
+
+import net.sf.json.JSONObject;
+
+public class TestClientMain {
+
+	static JFrame frame=null;
+	static JTextArea label;
+	static TextField textField,textField1,textField2;
+	static Socket socket=null;
+	public static void main(String[]arg1) {
+	    frame=new JFrame("客户端");
+		frame.setBounds(50, 50, 500, 650);
+		frame.setLayout(null);
+		Font font=new Font(null, 0, 16);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		JButton button=new JButton("连接服务器");
+		button.setFont(font);
+		button.setBounds(100, 50, 300, 50);
+		button.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					socket=new Socket("10.253.87.224", 500);
+					PrintWriter out=null;
+					try {
+						out=new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), "gb2312")), true);
+						Map<String, String>map=new HashMap<String, String>();
+						map.put("name", textField1.getText().toString());
+						JSONObject jsonObject=JSONObject.fromObject(map);
+						String string=jsonObject.toString();
+						out.println(string);
+					} catch (UnsupportedEncodingException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+
+					InClientThread inClientThread=new InClientThread(socket, label);
+					inClientThread.start();
+				} catch (UnknownHostException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		frame.add(button);
+		label=new JTextArea(" ");
+		label.setLineWrap(true);		
+		label.setEditable(false);
+		label.setAutoscrolls(true);
+		label.setFont(font);
+		label.setBounds(100, 110, 200, 200);
+		frame.add(label);
+		textField=new TextField();
+		textField.setFont(font);
+		textField.setBounds(100, 320, 150, 50);
+		frame.add(textField);
+		textField1=new TextField(" name");
+		textField1.setFont(font);
+		textField1.setBounds(100, 420, 150, 50);
+		frame.add(textField1);
+				textField2=new TextField(" to");
+				textField2.setFont(font);
+				textField2.setBounds(100, 520, 150, 50);
+				frame.add(textField2);
+		
+		JButton buttonE=new JButton("发送");
+		buttonE.setFont(font);
+		buttonE.setBounds(260, 320, 80, 50);
+		buttonE.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//testThread.isOpen=false;
+				PrintWriter out=null;
+				try {
+					out=new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), "gb2312")), true);
+					Map<String, String>map=new HashMap<String, String>();
+					map.put("from", textField1.getText().toString());
+					map.put("to", textField2.getText().toString());
+					map.put("msg", textField.getText().toString());
+					JSONObject jsonObject=JSONObject.fromObject(map);
+					String string=jsonObject.toString();
+					out.println(string);
+				} catch (UnsupportedEncodingException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+
+			}
+		});
+		frame.add(buttonE);
+		frame.setVisible(true);
+	}
+
+}
+</textarea><br>
+客户端的代码<br>
+<textarea rows="30" cols="100%" readonly="readonly">
+package testSocketClient;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.Socket;
+
+import javax.swing.JTextArea;
+
+import net.sf.json.JSONObject;
+
+public class InClientThread extends Thread{
+	Socket socket=null;
+	JTextArea jTextArea=null;
+	BufferedReader in=null;
+	String msg=null;
+	public InClientThread(Socket socket,JTextArea jTextArea) {
+		this.socket=socket;
+		this.jTextArea=jTextArea;
+		try {
+			in=new BufferedReader(new InputStreamReader(socket.getInputStream(), "gb2312"));
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	public void run() {
+		while (true) {
+			try {
+				if ((msg=in.readLine())!=null) {
+					/*String string=jTextArea.getText().toString()+"\n";
+					jTextArea.setText(string+msg);*/
+					String string=jTextArea.getText().toString()+"\n";
+					JSONObject jsonObject=new JSONObject().fromObject(msg);
+					String name=jsonObject.getString("from");
+					String msg=jsonObject.getString("msg");
+					jTextArea.setText(string+name+":"+msg);
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+}
+</textarea>
+<br>
+<br>
+<br>
+
+
+
+
+
+
+
+
+								</article>
+							</div>
+							<div class="col-4 col-12-mobile" id="sidebar">
+								<hr class="first" />
+								<section>
+									<header>
+										<h3><a href="info.html">了解作者</a></h3>
+									</header>
+									<p>
+										mythSun，关键词“神秘”和“太阳”，我的神秘源于炽热的光芒。这个组合也巧妙的把我的姓名简写融合进去。
+                                        为什么要搭建这个博客平台呢，最开始是因为见到很多程序员都有自己的博客，那我也做一个吧。后来做着做着发现，好像还挺有意思
+                                        就坚持了下来。
+									</p>
+									<footer>
+										<a href="info.html" class="button">了解更多</a>
+									</footer>
+								</section>
+								<hr />
+								<section>
+									<header>
+										<h3>博主推荐</h3>
+									</header>
+									<p>
+										来看看我推荐的博文吧
+									</p>
+									<div class="row gtr-50">
+										<div class="col-4">
+											<a href="ssh_20191207.html" class="image fit"><img src="img/2019120727.png" width="175" height="139" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>简单搭建ssh框架实现登录功能</h4>
+											<p>
+												5分钟快速搭建ssh框架的项目
+											</p>
+										</div>
+										<div class="col-4">
+											<a href="ssh_jsj_20191207.html" class="image fit"><img src="img/20191207a13.png" width="175" height="139" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>简单使用jsp+servlet+javabean实现登录功能</h4>
+											<p>
+												用实战教你用jsp+servlet+javabean
+											</p>
+										</div>
+										<div class="col-4">
+											<a href="qd_20191208.html" class="image fit"><img src="img/201912081.png" width="175" height="139" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>如何让textarea不可编辑只可读（博客常用）</h4>
+											<p>
+												博客里的代码块重点标记
+											</p>
+										</div>
+										<div class="col-4">
+											<a href="ssh_201912111.html" class="image fit"><img src="img/201912111.png" width="175" height="139" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>spring控制反转</h4>
+											<p>
+												都说控制反转好，那么这个东西是什么呢
+											</p>
+										</div>
+										<div class="col-4">
+											<a href="ssh_201912112.html" class="image fit"><img src="img/201912112.png" width="175" height="139" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>如何让applicationContext配置文件在src下</h4>
+											<p>
+												其实配置文件本身就是标记，真正有效的还是代码
+											</p>
+										</div>
+									</div>
+									<footer>
+										<a href="list_java.html" class="button">去看更多</a>
+									</footer>
+								</section>
+							</div>
+						</div>
+						<hr />
+						<div class="row">
+							<article class="col-4 col-12-mobile special">
+								<a href="ssh_20191207.html" class="image featured"><img src="img/2019120727.png" width="368px" height="256px" alt="" /></a>
+								<header>
+									<h3><a href="ssh_20191207.html">简单的ssh框架</a></h3>
+								</header>
+								<p>
+									ssh框架指的是Spring、struts、hibernate<br>如何快速架设一个使用ssh框架的项目呢
+								</p>
+							</article>
+							<article class="col-4 col-12-mobile special">
+								<a href="ssh_jsj_20191207.html" class="image featured"><img src="img/20191207a13.png" width="368px" height="256px" alt="" /></a>
+								<header>
+									<h3><a href="ssh_jsj_20191207.html">简单使用jsp+servlet+javabean实现登录功能</a></h3>
+								</header>
+								<p>
+									用实战教你用<br>jsp+servlet+javabean
+								</p>
+							</article>
+							<article class="col-4 col-12-mobile special">
+								<a href="qd_20191208.html" class="image featured"><img src="img/201912081.png" width="368px" height="256px" alt="" /></a>
+								<header>
+									<h3><a href="qd_20191208.html">如何让textarea不可编辑只可读（博客常用）</a></h3>
+								</header>
+								<p>
+									博客里的代码块重点标记
+								</p>
+							</article>
+						</div>
+                        
+					</div>
+
+				</div>
+
+			<!-- Footer -->
+			<iframe id="iframe" width="100%" height="1200px" frameborder="0" scrolling="no" src="../fo.html"></iframe>
+
+		</div>
+
+		<!-- Scripts -->
+			<script src="../assets/js/jquery.min.js"></script>
+			<script src="../assets/js/jquery.dropotron.min.js"></script>
+			<script src="../assets/js/jquery.scrolly.min.js"></script>
+			<script src="../assets/js/jquery.scrollex.min.js"></script>
+			<script src="../assets/js/browser.min.js"></script>
+			<script src="../assets/js/breakpoints.min.js"></script>
+			<script src="../assets/js/util.js"></script>
+			<script src="../assets/js/main.js"></script>
+
+	</body>
+</html>

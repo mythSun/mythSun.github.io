@@ -1,0 +1,254 @@
+﻿<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<title>用实例讲述jvm</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="../assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="../assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="right-sidebar is-preload">
+		<div id="page-wrapper">
+
+			<!-- Header -->
+				<div id="header">
+
+					<!-- Inner -->
+						<div class="inner">
+							<header>
+								<h1><a href="../index.html" id="logo">mythSun</a></h1>
+							</header>
+						</div>
+
+					<!-- Nav -->
+						<nav id="nav">
+							<ul>
+								<li><a href="../index.html">主页</a></li>
+								<li>
+									<a href="#">博客</a>
+									<ul>
+										<li><a href="info.html">个人</a></li>
+										<li>
+											<a href="#">技术 &hellip;</a>
+											<ul>
+												<li><a href="list_java.html">JAVA</a></li>
+												<li><a href="list_qd.html">前端</a></li>
+												<li><a href="list_fm.html">框架</a></li>
+												<li><a href="list_db.html">数据库</a></li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+								<li><a href="list_xm.html">项目</a></li>
+								<li><a href="list_zy.html">资源</a></li>
+								<li><a href="list_lx.html">联系</a></li>
+							</ul>
+						</nav>
+
+
+				</div>
+
+			<!-- Main -->
+				<div class="wrapper style1">
+
+					<div class="container">
+						<div class="row gtr-200">
+							<div class="col-8 col-12-mobile" id="content">
+								<article id="main">
+									<header>
+										<h2>用实例讲述jvm</h2>
+										<p>
+大家好，我是mythSun。<br>
+很高兴能在这里和大家分享，用实例讲述jvm。<br>
+话不多说，直接开始。
+
+									  </p>
+									</header>
+
+
+本案例是网上大佬写的，我拿过来正好用一下，然后文章最后写了个图，<br>
+让大家更容易理解，结合我的上一篇博文“jvm基础”，方便大家更轻松接受jvm的知识。<br>
+<br>
+<textarea rows="50" cols="100%" readonly="readonly">
+/**
+ * 从JVM调用的角度分析java程序堆内存空间的使用：
+ * 当JVM进程启动的时候，会从--类加载--路径中找到包含main方法的入口类HelloJVM
+ * 找到HelloJVM会直接读取该文件中的--二进制数据--，并且把该类的信息放到--运行时--的Method内存区域中。
+ * 然后会定位到HelloJVM中的main方法的--字节码--中，并开始执行Main方法中的指令
+ * 此时会创建Student--实例--对象，并且使用student来--引用--该对象（或者说给该对象命名），其内幕如下：
+ * 第一步：JVM会直接到--Method区域--中去查找Student类的信息，此时发现没有Student类，--就通过--类加载器加载该Student类文件；
+ * 第二步：在JVM的Method区域中加载并找到了Student类之后会在--Heap区域--中为Student实例对象分配内存，
+ * 并且在Student的实例对象中--持有--指向方法区域中的Student类的--引用--（内存地址）；
+ * 第三步：JVM实例化完成后会在当前线程中为Stack中的reference建立实际的应用关系，此时会赋值给student
+ * 接下来就是调用方法
+ * 在JVM中--方法的调用--一定是属于线程的行为，也就是说方法调用本身会发生在线程的--方法调用栈--：
+ * 线程的方法调用栈（Method Stack Frames），每一个--方法的调用--就是方法调用栈中的一个Frame，
+ * 该Frame包含了方法的参数，局部变量，临时数据等 student.sayHello();
+ */
+public class HelloJVM {
+	//在JVM运行的时候会通过反射的方式到Method区域找到入口方法main
+	public static void main(String[] args) {//main方法也是放在Method方法区域中的
+		/**
+		 * student(小写的)是放在--主线程--中的Stack区域中的
+		 * Student对象--实例--是放在所有线程--共享--的Heap区域中的
+		 */
+		Student student = new Student("spark");
+		/**
+		 * 首先会通过student指针（或句柄）（指针就直接指向堆中的对象，句柄表明有一个中间的,student指向句柄，句柄指向对象）
+		 * 找Student对象，当找到该对象后会通过--对象内部指向方法区域中的指针--来调用具体的方法去执行任务
+		 */
+		student.sayHello();
+	}
+}
+ 
+class Student {
+	// name本身作为成员是放在stack区域的但是name指向的--String对象--是放在Heap中
+	private String name;
+	public Student(String name) {
+		this.name = name;
+	}
+	//sayHello这个方法是放在--方法区--中的
+	public void sayHello() {
+	System.out.println("Hello, this is " + this.name);
+	}
+}
+
+</textarea><br>
+<br>
+下面是绘图解释<br>
+<img src="img/20191212zz.png" width="100%" height="100%"><br>
+
+
+
+
+								</article>
+							</div>
+							<div class="col-4 col-12-mobile" id="sidebar">
+								<hr class="first" />
+								<section>
+									<header>
+										<h3><a href="info.html">了解作者</a></h3>
+									</header>
+									<p>
+										mythSun，关键词“神秘”和“太阳”，我的神秘源于炽热的光芒。这个组合也巧妙的把我的姓名简写融合进去。
+                                        为什么要搭建这个博客平台呢，最开始是因为见到很多程序员都有自己的博客，那我也做一个吧。后来做着做着发现，好像还挺有意思
+                                        就坚持了下来。
+									</p>
+									<footer>
+										<a href="info.html" class="button">了解更多</a>
+									</footer>
+								</section>
+								<hr />
+								<section>
+									<header>
+										<h3>博主推荐</h3>
+									</header>
+									<p>
+										来看看我推荐的博文吧
+									</p>
+									<div class="row gtr-50">
+										<div class="col-4">
+											<a href="ssh_20191207.html" class="image fit"><img src="img/2019120727.png" width="175" height="139" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>简单搭建ssh框架实现登录功能</h4>
+											<p>
+												5分钟快速搭建ssh框架的项目
+											</p>
+										</div>
+										<div class="col-4">
+											<a href="ssh_jsj_20191207.html" class="image fit"><img src="img/20191207a13.png" width="175" height="139" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>简单使用jsp+servlet+javabean实现登录功能</h4>
+											<p>
+												用实战教你用jsp+servlet+javabean
+											</p>
+										</div>
+										<div class="col-4">
+											<a href="qd_20191208.html" class="image fit"><img src="img/201912081.png" width="175" height="139" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>如何让textarea不可编辑只可读（博客常用）</h4>
+											<p>
+												博客里的代码块重点标记
+											</p>
+										</div>
+										<div class="col-4">
+											<a href="ssh_201912111.html" class="image fit"><img src="img/201912111.png" width="175" height="139" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>spring控制反转</h4>
+											<p>
+												都说控制反转好，那么这个东西是什么呢
+											</p>
+										</div>
+										<div class="col-4">
+											<a href="ssh_201912112.html" class="image fit"><img src="img/201912112.png" width="175" height="139" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>如何让applicationContext配置文件在src下</h4>
+											<p>
+												其实配置文件本身就是标记，真正有效的还是代码
+											</p>
+										</div>
+									</div>
+									<footer>
+										<a href="list_java.html" class="button">去看更多</a>
+									</footer>
+								</section>
+							</div>
+						</div>
+						<hr />
+						<div class="row">
+							<article class="col-4 col-12-mobile special">
+								<a href="ssh_20191207.html" class="image featured"><img src="img/2019120727.png" width="368px" height="256px" alt="" /></a>
+								<header>
+									<h3><a href="ssh_20191207.html">简单的ssh框架</a></h3>
+								</header>
+								<p>
+									ssh框架指的是Spring、struts、hibernate<br>如何快速架设一个使用ssh框架的项目呢
+								</p>
+							</article>
+							<article class="col-4 col-12-mobile special">
+								<a href="ssh_jsj_20191207.html" class="image featured"><img src="img/20191207a13.png" width="368px" height="256px" alt="" /></a>
+								<header>
+									<h3><a href="ssh_jsj_20191207.html">简单使用jsp+servlet+javabean实现登录功能</a></h3>
+								</header>
+								<p>
+									用实战教你用<br>jsp+servlet+javabean
+								</p>
+							</article>
+							<article class="col-4 col-12-mobile special">
+								<a href="qd_20191208.html" class="image featured"><img src="img/201912081.png" width="368px" height="256px" alt="" /></a>
+								<header>
+									<h3><a href="qd_20191208.html">如何让textarea不可编辑只可读（博客常用）</a></h3>
+								</header>
+								<p>
+									博客里的代码块重点标记
+								</p>
+							</article>
+						</div>
+                        
+					</div>
+
+				</div>
+
+			<!-- Footer -->
+			<iframe id="iframe" width="100%" height="1200px" frameborder="0" scrolling="no" src="../fo.html"></iframe>
+
+		</div>
+
+		<!-- Scripts -->
+			<script src="../assets/js/jquery.min.js"></script>
+			<script src="../assets/js/jquery.dropotron.min.js"></script>
+			<script src="../assets/js/jquery.scrolly.min.js"></script>
+			<script src="../assets/js/jquery.scrollex.min.js"></script>
+			<script src="../assets/js/browser.min.js"></script>
+			<script src="../assets/js/breakpoints.min.js"></script>
+			<script src="../assets/js/util.js"></script>
+			<script src="../assets/js/main.js"></script>
+
+	</body>
+</html>

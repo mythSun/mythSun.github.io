@@ -1,0 +1,472 @@
+﻿<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<title>简单的JAVA连接数据库的教程</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="../assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="../assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="right-sidebar is-preload">
+		<div id="page-wrapper">
+
+			<!-- Header -->
+				<div id="header">
+
+					<!-- Inner -->
+						<div class="inner">
+							<header>
+								<h1><a href="../index.html" id="logo">mythSun</a></h1>
+							</header>
+						</div>
+
+					<!-- Nav -->
+						<nav id="nav">
+							<ul>
+								<li><a href="../index.html">主页</a></li>
+								<li>
+									<a href="#">博客</a>
+									<ul>
+										<li><a href="info.html">个人</a></li>
+										<li>
+											<a href="#">技术 &hellip;</a>
+											<ul>
+												<li><a href="list_java.html">JAVA</a></li>
+												<li><a href="list_qd.html">前端</a></li>
+												<li><a href="list_fm.html">框架</a></li>
+												<li><a href="list_db.html">数据库</a></li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+								<li><a href="list_xm.html">项目</a></li>
+								<li><a href="list_zy.html">资源</a></li>
+								<li><a href="list_lx.html">联系</a></li>
+							</ul>
+						</nav>
+
+
+				</div>
+
+			<!-- Main -->
+				<div class="wrapper style1">
+
+					<div class="container">
+						<div class="row gtr-200">
+							<div class="col-8 col-12-mobile" id="content">
+								<article id="main">
+									<header>
+										<h2>JAVA连接sql的简单操作</h2>
+										<p>
+大家好，我是mythSun。<br>
+很高兴能在这里和大家分享，JAVA连接sql的简单操作。<br>
+话不多说，直接开始。
+
+									  </p>
+									</header>
+
+数据库配置的基本步骤<br>
+<br>
+加载载JDBC驱动，这也是为什么导入jar包的原因<br>
+建立数据库连接Connection  connection=DriverManager.getConnection(url,user,password)<br>
+创建一个语句对象Statement statement=(Statement) connection.createStatement();<br>
+执行一个查询ResultSet resultSet=statement.executeQuery(sql);<br>
+处理结果集<br>
+<textarea rows="6" cols="100%" readonly="readonly">
+while (resultSet.next()) {
+					HashMap<String, Object> map=new HashMap<>();
+					for(int i=1;i<=resultSetMetaData.getColumnCount();i++){
+						map.put(resultSetMetaData.getColumnName(i), resultSet.getObject(i));
+					}
+</textarea><br>
+关闭数据库连接<br>
+<br>
+下面是详细代码，用实际操作演示。<br>
+一个登录界面，数据库查询，存在该用户，跳转到登陆成功界面，<br>
+登录界面代码：Login.java<br>
+<textarea rows="30" cols="100%" readonly="readonly">
+package SqlConn;
+
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+//登录界面
+public class Login {
+
+	public static void main(String[] args) {
+		intiview();
+	}
+	//界面绘制
+	public static void intiview() {
+		// TODO 登录界面
+		JFrame jFrame=new JFrame("登录界面");
+		jFrame.setBounds(100, 100, 800, 500);
+		JPanel jPanel=new JPanel();
+		jFrame.add(jPanel);
+		jPanel.setSize(800, 500);
+		jPanel.setLayout(null);
+		Font font =new Font("黑体",0,20);
+		jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		JLabel jLabel=new JLabel("用户名");
+		jLabel.setBounds(250, 100, 100, 50);
+		jLabel.setFont(font);
+		jPanel.add(jLabel);
+		JTextField jTextField=new JTextField();
+		jTextField.setBounds(350, 110, 150, 30);
+		jPanel.add(jTextField);
+		
+		JLabel jLabel1=new JLabel("密  码");
+		jLabel1.setBounds(250, 200, 100, 50);
+		jLabel1.setFont(font);
+		jPanel.add(jLabel1);
+		JTextField jTextField1=new JTextField();
+		jTextField1.setBounds(350, 210, 150, 30);
+		jPanel.add(jTextField1);
+		
+		JButton jButton=new JButton("登录");
+		jButton.setBounds(270, 300, 80, 30);
+		jPanel.add(jButton);
+		
+		jButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+
+				String name=jTextField.getText().toString().trim();
+				String pw=jTextField1.getText().toString().trim();
+	
+				if(name.equals("")){
+					JOptionPane.showMessageDialog(jFrame, "用户名不为空");
+				}
+				if(pw.equals("")){
+					JOptionPane.showMessageDialog(jFrame, "密码不为空");
+				}
+				String sql="select * from login where user="+name+"";
+				ArrayList<HashMap<String, Object>> list =new ArrayList<HashMap<String, Object>>();
+				DbConfig dbOp=new DbConfig();		
+				list=dbOp.query(sql);
+				if(list.size()>0){
+					String pw1=list.get(0).get("pw").toString();
+					if (pw1.equals(pw)) {
+						jFrame.dispose();
+						new MainView();
+					} else {
+						JOptionPane.showMessageDialog(jFrame, "用户名或者密码错误");
+						jFrame.dispose();
+		            	intiview();	
+					}
+				}
+					
+			}
+		});
+
+		JButton jButton1=new JButton("重置");
+		jButton1.setBounds(390, 300, 80, 30);
+		jPanel.add(jButton1);
+		jButton1.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+
+				jFrame.dispose();
+				intiview();
+			}
+		});
+
+		jFrame.setVisible(true);
+
+	}
+
+}
+</textarea><br>
+数据库操作代码：DbConfig.java<br>
+<textarea rows="30" cols="100%" readonly="readonly">
+package SqlConn;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+//sql配置
+public class DbConfig {
+
+	String driver="com.mysql.jdbc.Driver";
+    String url="jdbc:mysql://127.0.0.1:3306/test?useSSL=true";
+    String user="root";
+    String password="root";
+    Connection  connection =null;
+    ResultSet resultSet =null;
+    Statement statement=null;
+
+    public ArrayList<HashMap<String, Object>> query(String sql) {
+        ArrayList<HashMap<String, Object>> list =new ArrayList<>();
+   	 try {
+			Class.forName(driver);
+			try {
+				connection=DriverManager.getConnection(url,user,password);
+				statement =(Statement) connection.createStatement();
+				resultSet=statement.executeQuery(sql);
+				ResultSetMetaData resultSetMetaData=(ResultSetMetaData) resultSet.getMetaData();
+				while (resultSet.next()) {
+					HashMap<String, Object> map=new HashMap<>();
+					for(int i=1;i<=resultSetMetaData.getColumnCount();i++){
+						map.put(resultSetMetaData.getColumnName(i), resultSet.getObject(i));
+					}
+					list.add(map);
+				}
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
+			
+		} catch (ClassNotFoundException e) {
+
+			e.printStackTrace();
+		}
+   	 finally {
+   		 closeDB();
+		}
+		return list;
+	}
+
+    public int updateDB(String sql) {
+   	int count=0;
+   	try {
+			Class.forName(driver);
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+   	try {
+		connection =DriverManager.getConnection(url,user,password);
+		Statement statement=(Statement) connection.createStatement();
+   	count=((java.sql.Statement) statement).executeUpdate(sql);	
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+   	return count;     	
+    }     
+																																					
+    public void closeDB() {
+   	 if(resultSet !=null)
+   	 {
+   		 try {
+				resultSet.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+   	 }
+   	 if(statement !=null)
+   	 {
+   		 try {
+   			 statement.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+   	 }
+   	 if(connection !=null)
+   	 {
+   		 try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+   	 }
+    }
+
+}
+</textarea><br>
+登陆结果显示界面：MainView.java<br>
+<textarea rows="30" cols="100%" readonly="readonly">
+package SqlConn;
+
+import java.awt.Font;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+//登陆成功显示
+public class MainView {
+	public MainView() {
+
+		JFrame jFrame=new JFrame("用户界面");
+		jFrame.setBounds(100, 100, 800, 500);
+		JPanel jPanel=new JPanel();
+		jFrame.add(jPanel);
+		jPanel.setSize(800, 500);
+		jPanel.setLayout(null);
+		Font font =new Font("楷体",0,40);
+		jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		JLabel jLabel=new JLabel("欢迎您");
+		jLabel.setBounds(300, 150, 200, 100);
+		jLabel.setFont(font);
+		jPanel.add(jLabel);
+		
+		jFrame.setVisible(true);
+	}
+
+}
+</textarea><br>
+<br>
+这只是基本的java连接mysql数据库的操作，作为一个java程序员，必须掌握的技能之一。<br>
+所需jar包是：<br>
+mysql-connector-java-5.1.46-bin.jar<br>
+<br>
+
+
+
+
+
+
+
+								</article>
+							</div>
+							<div class="col-4 col-12-mobile" id="sidebar">
+								<hr class="first" />
+								<section>
+									<header>
+										<h3><a href="info.html">了解作者</a></h3>
+									</header>
+									<p>
+										mythSun，关键词“神秘”和“太阳”，我的神秘源于炽热的光芒。这个组合也巧妙的把我的姓名简写融合进去。
+                                        为什么要搭建这个博客平台呢，最开始是因为见到很多程序员都有自己的博客，那我也做一个吧。后来做着做着发现，好像还挺有意思
+                                        就坚持了下来。
+									</p>
+									<footer>
+										<a href="info.html" class="button">了解更多</a>
+									</footer>
+								</section>
+								<hr />
+								<section>
+									<header>
+										<h3>博主推荐</h3>
+									</header>
+									<p>
+										来看看我推荐的博文吧
+									</p>
+									<div class="row gtr-50">
+										<div class="col-4">
+											<a href="ssh_20191207.html" class="image fit"><img src="img/2019120727.png" width="175" height="139" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>简单搭建ssh框架实现登录功能</h4>
+											<p>
+												5分钟快速搭建ssh框架的项目
+											</p>
+										</div>
+										<div class="col-4">
+											<a href="ssh_jsj_20191207.html" class="image fit"><img src="img/20191207a13.png" width="175" height="139" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>简单使用jsp+servlet+javabean实现登录功能</h4>
+											<p>
+												用实战教你用jsp+servlet+javabean
+											</p>
+										</div>
+										<div class="col-4">
+											<a href="qd_20191208.html" class="image fit"><img src="img/201912081.png" width="175" height="139" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>如何让textarea不可编辑只可读（博客常用）</h4>
+											<p>
+												博客里的代码块重点标记
+											</p>
+										</div>
+										<div class="col-4">
+											<a href="ssh_201912111.html" class="image fit"><img src="img/201912111.png" width="175" height="139" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>spring控制反转</h4>
+											<p>
+												都说控制反转好，那么这个东西是什么呢
+											</p>
+										</div>
+										<div class="col-4">
+											<a href="ssh_201912112.html" class="image fit"><img src="img/201912112.png" width="175" height="139" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>如何让applicationContext配置文件在src下</h4>
+											<p>
+												其实配置文件本身就是标记，真正有效的还是代码
+											</p>
+										</div>
+									</div>
+									<footer>
+										<a href="list_java.html" class="button">去看更多</a>
+									</footer>
+								</section>
+							</div>
+						</div>
+						<hr />
+						<div class="row">
+							<article class="col-4 col-12-mobile special">
+								<a href="ssh_20191207.html" class="image featured"><img src="img/2019120727.png" width="368px" height="256px" alt="" /></a>
+								<header>
+									<h3><a href="ssh_20191207.html">简单的ssh框架</a></h3>
+								</header>
+								<p>
+									ssh框架指的是Spring、struts、hibernate<br>如何快速架设一个使用ssh框架的项目呢
+								</p>
+							</article>
+							<article class="col-4 col-12-mobile special">
+								<a href="ssh_jsj_20191207.html" class="image featured"><img src="img/20191207a13.png" width="368px" height="256px" alt="" /></a>
+								<header>
+									<h3><a href="ssh_jsj_20191207.html">简单使用jsp+servlet+javabean实现登录功能</a></h3>
+								</header>
+								<p>
+									用实战教你用<br>jsp+servlet+javabean
+								</p>
+							</article>
+							<article class="col-4 col-12-mobile special">
+								<a href="qd_20191208.html" class="image featured"><img src="img/201912081.png" width="368px" height="256px" alt="" /></a>
+								<header>
+									<h3><a href="qd_20191208.html">如何让textarea不可编辑只可读（博客常用）</a></h3>
+								</header>
+								<p>
+									博客里的代码块重点标记
+								</p>
+							</article>
+						</div>
+                        
+					</div>
+
+				</div>
+
+			<!-- Footer -->
+			<iframe id="iframe" width="100%" height="1200px" frameborder="0" scrolling="no" src="../fo.html"></iframe>
+
+		</div>
+
+		<!-- Scripts -->
+			<script src="../assets/js/jquery.min.js"></script>
+			<script src="../assets/js/jquery.dropotron.min.js"></script>
+			<script src="../assets/js/jquery.scrolly.min.js"></script>
+			<script src="../assets/js/jquery.scrollex.min.js"></script>
+			<script src="../assets/js/browser.min.js"></script>
+			<script src="../assets/js/breakpoints.min.js"></script>
+			<script src="../assets/js/util.js"></script>
+			<script src="../assets/js/main.js"></script>
+
+	</body>
+</html>

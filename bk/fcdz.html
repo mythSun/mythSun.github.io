@@ -1,0 +1,459 @@
+﻿<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<title>python做的飞船大战</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="../assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="../assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="right-sidebar is-preload">
+		<div id="page-wrapper">
+
+			<!-- Header -->
+				<div id="header">
+
+					<!-- Inner -->
+						<div class="inner">
+							<header>
+								<h1><a href="../index.html" id="logo">mythSun</a></h1>
+							</header>
+						</div>
+
+					<!-- Nav -->
+						<nav id="nav">
+							<ul>
+								<li><a href="../index.html">主页</a></li>
+								<li>
+									<a href="#">博客</a>
+									<ul>
+										<li><a href="info.html">个人</a></li>
+										<li>
+											<a href="#">技术 &hellip;</a>
+											<ul>
+												<li><a href="list_java.html">JAVA</a></li>
+												<li><a href="list_qd.html">前端</a></li>
+												<li><a href="list_fm.html">框架</a></li>
+												<li><a href="list_db.html">数据库</a></li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+								<li><a href="list_xm.html">项目</a></li>
+								<li><a href="list_zy.html">资源</a></li>
+								<li><a href="list_lx.html">联系</a></li>
+							</ul>
+						</nav>
+
+
+				</div>
+
+			<!-- Main -->
+				<div class="wrapper style1">
+
+					<div class="container">
+						<div class="row gtr-200">
+							<div class="col-8 col-12-mobile" id="content">
+								<article id="main">
+									<header>
+										<h2>pythom做的飞船大战</h2>
+										<p>
+大家好，我是mythSun。<br>
+很高兴能在这里和大家分享，python做的飞船大战游戏。<br>
+话不多说，直接开始。
+
+									  </p>
+									</header>
+
+先上代码分层图：<br>
+<img src="img/20191212a2.png" width="100%" height="100%"><br>
+这个项目中“12”是“one”的分文件。<br>
+就是相当于把“none”拆成了各小模块，因为当初要将其转为exe在电脑上直接玩，不然每次要玩都要打开eclipse多费劲。<br>
+有需要的小伙伴可以联系我要源码，在这个博客上写教程，<br>
+有些难为我了，毕竟就算简略的说，上面一个小模块一篇博文，都要写很久。<br>
+所以只能贴一下部分核心的代码，思路，<br>
+想挑战一下的小伙伴可以根据这个，做一个比我这个更好的。<br>
+<br>
+思路：这个游戏其实就是接受键盘传入的按键，然后做出相应的处理，然后将新的界面，绘制到屏幕上。<br>
+<br>
+用到的基本模型<br>
+敌方飞船模型：<br>
+<textarea rows="30" cols="100%" readonly="readonly">
+class Alien(Sprite):
+    '''表示单个敌方飞船的类'''
+    def __init__(self,ai_settings,screen):
+        '''初始化敌方飞船并且设置其起始位置'''
+        super(Alien,self).__init__()
+        self.screen=screen
+        self.ai_settings=ai_settings
+        #加载敌方飞船图像，并设置其rect属性
+        self.image =pygame.image.load('alien.bmp')
+        self.rect =self.image.get_rect()
+        #每个敌方飞船最初都在屏幕的左上角附近
+        self.rect.x=self.rect.width
+        self.rect.y=self.rect.height
+        #存储敌方飞船的准确位置
+        self.x=float(self.rect.x)
+    def blitme(self):
+        '''在指定位置绘制敌方飞船'''
+        self.screen.blit(self.image,self.rect)
+    def update(self):
+        '''向右或者向右移动敌方飞船'''
+        self.x += (self.ai_settings.alien_speed_factor*self.ai_settings.fleet_direction)
+        self.rect.x=self.x
+    def check_edges(self):
+        '''如果敌方飞船位于屏幕边缘，就返回True'''
+        screen_rect = self.screen.get_rect()
+        if self.rect.right >= screen_rect.right:
+            return True
+        elif self.rect.left <= 0:
+            return True
+</textarea><br>
+子弹模型：<br>
+<textarea rows="30" cols="100%" readonly="readonly">
+class Bullet(Sprite):
+    '''对飞船发射的子弹进行管理的类'''
+    def __init__(self,ai_settings,screen,ship):
+        '''在飞船所处的位置创建一个子弹对象'''
+        super(Bullet,self).__init__()
+        self.screen =screen
+        
+        #在(0,0)处创建一个表示子弹的矩形，再设置正确的位置
+        self.rect = pygame.Rect(0,0,ai_settings.bullet_width,ai_settings.bullet_height)
+        self.rect.centerx =ship.rect.centerx
+        self.rect.top = ship.rect.top
+        #存储用小数表示的子弹位置
+        self.y=float(self.rect.y)
+        
+        self.color= ai_settings.bullet_color
+        self.speed_factor =ai_settings.bullet_speed_factor        
+    def update(self):
+        '''向上移动子弹'''
+        #更新表示子弹位置的小数值
+        self.y -= self.speed_factor
+        #更新表示子弹的rect的位置
+        self.rect.y= self.y
+    def draw_bullet(self):
+        '''在屏幕上绘制子弹'''
+        pygame.draw.rect(self.screen,self.color,self.rect)
+</textarea><br>
+飞船模型<br>
+<textarea rows="30" cols="100%" readonly="readonly">
+class Ship(Sprite):
+    def __init__(self, ai_settings,screen):
+        '''初始化飞船并且设置其初始位置'''
+        super(Ship,self).__init__()
+        self.screen=screen
+        self.ai_settings =ai_settings
+        #加载飞船图像并获取其外接矩形
+        self.image=pygame.image.load('ship.bmp') #load加载图像
+        self.rect=self.image.get_rect() #获取位图的矩形
+        self.screen_rect=screen.get_rect() #获取屏幕的矩形
+        #将每艘新飞船放在屏幕底部中央
+        self.rect.centerx=self.screen_rect.centerx #放在屏幕的水平重点
+        self.rect.bottom=self.screen_rect.bottom    #放在屏幕的最底部
+        #在飞船的属性center中存储小数值
+        self.center = float(self.rect.centerx)
+        #移动标志
+        self.moving_right = False
+        self.moving_left = False
+    def update(self):
+        '''根据移动标志调整飞船的位置'''
+        if self.moving_right and self.rect.right < self.screen_rect.right:
+            self.center += self.ai_settings.ship_speed_factor
+        if self.moving_left and self.rect.left > 0:        #之所以没有用elif，是考虑了左右键同时按住
+            self.center -= self.ai_settings.ship_speed_factor     
+        #根据self.center更新rect对象
+        self.rect.centerx=self.center
+    def blitme(self):
+        '''在指定位置绘制飞船'''
+        self.screen.blit(self.image,self.rect)
+    def center_ship(self):
+        '''让飞船在屏幕上居中'''
+        self.center=self.screen_rect.centerx
+</textarea><br>
+几个重要的方法<br>
+飞船被撞—游戏结束：<br>
+<textarea rows="30" cols="100%" readonly="readonly">
+def ship_hit(ai_settings,screen,stats,sb,ship,aliens,bullets):
+    '''响应被敌方飞船撞到的飞船'''
+    if stats.ships_left > 0:
+        #将ships_left减1
+        stats.ships_left -= 1
+        #更新记分牌
+        sb.prep_ships()
+        #清空敌方飞船列表和子弹列表
+        aliens.empty()
+        bullets.empty()
+        #创建一群新的敌方飞船，并将飞船放到屏幕中央
+        create_fleet(ai_settings, screen, ship, aliens)
+        ship.center_ship()
+        #暂停
+        sleep(0.5)
+    else:
+        stats.game_active =False
+        #让鼠标可见
+        pygame.mouse.set_visible(True)
+</textarea><br>
+接受输入—按钮鼠标之类<br>
+<textarea rows="30" cols="100%" readonly="readonly">
+def check_events(ai_settings,screen,stats,sb,play_button,ship,aliens,bullets):
+    '''响应按键和鼠标事件'''
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            sys.exit()
+        elif event.type == pygame.KEYDOWN:  #按下按键监听
+            check_keydown_events(event,ai_settings,screen,ship,bullets)
+        elif event.type == pygame.KEYUP:  #抬起按键监听
+            check_keyup_events(event,ship)    
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            mouse_x,mouse_y = pygame.mouse.get_pos()
+            check_play_button(ai_settings,screen,stats,sb,play_button,ship,aliens,bullets,mouse_x,mouse_y)
+</textarea><br>
+图像更新—绘制屏幕<br>
+<textarea rows="30" cols="100%" readonly="readonly">
+def update_screen(ai_settings,screen,stats,sb,ship,aliens,bullets,play_button):
+    '''更新屏幕上的图像，并切换到新的屏幕'''
+    '''注意，绘制是有次序的，如果最后填充颜色，会把所有的东西覆盖掉'''
+    #每次循环是，绘制屏幕也要绘制颜色        
+    screen.fill(ai_settings.bg_color)   #fill是填充颜色
+    #在飞船和敌方飞船后面重绘所有子弹
+    for bullet in bullets.sprites():
+        bullet.draw_bullet()
+    #飞船显示
+    ship.blitme()
+    aliens.draw(screen)
+    #显示得分
+    sb.show_score()
+    #如果游戏处于非活动状态，就绘制“开始”按钮
+    if not stats.game_active:
+        play_button.draw_button()
+    #让最近绘制的屏幕可见，每次执行while循环绘制一个新屏幕，从而做出平滑移动的效果
+    pygame.display.flip()   #flip是绘制屏幕
+</textarea><br>
+击中敌方飞船<br>
+<textarea rows="30" cols="100%" readonly="readonly">
+def check_bullet_aliens_collisions(ai_settings,screen,stats,sb,ship,aliens,bullets):
+    #检查是否有子弹击中了敌方飞船
+    #如果是这样，就删除相应的敌方飞船
+    collisions=pygame.sprite.groupcollide(bullets,aliens,True,True) 
+    #记分
+    if collisions:
+        #确保一个敌方飞船记一次分
+        for aliens in collisions.values():
+            stats.score += ai_settings.alien_points * len(aliens)
+            sb.prep_score()
+        check_high_score(stats, sb)
+    if len(aliens) == 0:
+        #删除现有的子弹
+        bullets.empty()
+        #加快游戏节奏，提升各动态参数的速度值
+        ai_settings.increase_speed()
+        #提高等级
+        stats.level += 1
+        sb.prep_level()
+        #新建一群敌方飞船
+        create_fleet(ai_settings, screen, ship, aliens) 
+</textarea><br>
+显示得分—没有得分那太无聊了<br>
+<textarea rows="30" cols="100%" readonly="readonly">
+class Scoreboard():
+    '''显示得分信息的类'''
+    def __init__(self, ai_settings,screen,stats):
+        '''初始化显示得分涉及的属性'''
+        self.screen = screen
+        self.screen_rect = screen.get_rect()
+        self.ai_settings=ai_settings
+        self.stats= stats
+        #显示得分信息时使用的字体设置
+        self.text_color=(30,30,30)
+        self.font = pygame.font.SysFont('microsoftyahei',36)
+        #准备初始得分图像
+        self.prep_score()
+        #准备最高得分图像
+        self.prep_high_score()
+        self.prep_level()
+        self.prep_ships()
+    def prep_ships(self):
+        '''显示还剩下多少飞船'''
+        self.ships=Group()
+        for ship_number in range(self.stats.ships_left):
+            ship=Ship(self.ai_settings,self.screen)
+            ship.rect.x=10+ship_number*ship.rect.width
+            ship.rect.y=10
+            self.ships.add(ship)
+    def prep_level(self):
+        '''为等级转换为渲染的图像'''
+        self.level_image=self.font.render(str(self.stats.level),True,self.text_color,self.ai_settings.bg_color)
+        #将等级放在得分的下方
+        self.level_rect=self.level_image.get_rect()
+        self.level_rect.right=self.score_rect.right
+        self.level_rect.top=self.score_rect.bottom+10
+    def prep_score(self):
+        '''将得分转换为一副渲染的图像'''
+        #对显示数据格式化
+        rounded_score = round(self.stats.score, -1)
+        score_str = "{:,}".format(rounded_score)
+        self.score_image=self.font.render(score_str, True, self.text_color, self.ai_settings.bg_color)
+        #将得分放在屏幕的右上角
+        self.score_rect =self.score_image.get_rect()
+        self.score_rect.right=self.screen_rect.right-20
+        self.score_rect.top = 10
+    def show_score(self):
+        '''在屏幕上显示得分'''
+        self.screen.blit(self.score_image,self.score_rect)
+        self.screen.blit(self.high_score_image,self.high_score_rect)
+        self.screen.blit(self.level_image,self.level_rect)
+        #绘制飞船
+        self.ships.draw(self.screen)
+    def prep_high_score(self):
+        '''将最高得分转换为渲染的图像'''
+        high_score = round(self.stats.high_score, -1)
+        high_score_str = "{:,}".format(high_score)
+        self.high_score_image=self.font.render(high_score_str, True, self.text_color, self.ai_settings.bg_color)
+        #将最高得分放在屏幕中央
+        self.high_score_rect=self.high_score_image.get_rect()
+        self.high_score_rect.centerx= self.screen_rect.centerx
+        self.high_score_rect.top=self.score_rect.top
+</textarea><br>
+<br>
+另外还有一些，比如随着得分增高，敌方飞船移动就要加快，增加游戏难度；<br>
+再比如生命值限制、子弹限制等，就不一一说了。<br>
+有需要的小伙伴可以找我要源码。<br>
+效果图：<br>
+<img src="img/20191212a1.png" width="100%" height="100%"><br>
+
+<br>
+
+
+								</article>
+							</div>
+							<div class="col-4 col-12-mobile" id="sidebar">
+								<hr class="first" />
+								<section>
+									<header>
+										<h3><a href="info.html">了解作者</a></h3>
+									</header>
+									<p>
+										mythSun，关键词“神秘”和“太阳”，我的神秘源于炽热的光芒。这个组合也巧妙的把我的姓名简写融合进去。
+                                        为什么要搭建这个博客平台呢，最开始是因为见到很多程序员都有自己的博客，那我也做一个吧。后来做着做着发现，好像还挺有意思
+                                        就坚持了下来。
+									</p>
+									<footer>
+										<a href="info.html" class="button">了解更多</a>
+									</footer>
+								</section>
+								<hr />
+								<section>
+									<header>
+										<h3>博主推荐</h3>
+									</header>
+									<p>
+										来看看我推荐的博文吧
+									</p>
+									<div class="row gtr-50">
+										<div class="col-4">
+											<a href="ssh_20191207.html" class="image fit"><img src="img/2019120727.png" width="175" height="139" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>简单搭建ssh框架实现登录功能</h4>
+											<p>
+												5分钟快速搭建ssh框架的项目
+											</p>
+										</div>
+										<div class="col-4">
+											<a href="ssh_jsj_20191207.html" class="image fit"><img src="img/20191207a13.png" width="175" height="139" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>简单使用jsp+servlet+javabean实现登录功能</h4>
+											<p>
+												用实战教你用jsp+servlet+javabean
+											</p>
+										</div>
+										<div class="col-4">
+											<a href="qd_20191208.html" class="image fit"><img src="img/201912081.png" width="175" height="139" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>如何让textarea不可编辑只可读（博客常用）</h4>
+											<p>
+												博客里的代码块重点标记
+											</p>
+										</div>
+										<div class="col-4">
+											<a href="ssh_201912111.html" class="image fit"><img src="img/201912111.png" width="175" height="139" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>spring控制反转</h4>
+											<p>
+												都说控制反转好，那么这个东西是什么呢
+											</p>
+										</div>
+										<div class="col-4">
+											<a href="ssh_201912112.html" class="image fit"><img src="img/201912112.png" width="175" height="139" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>如何让applicationContext配置文件在src下</h4>
+											<p>
+												其实配置文件本身就是标记，真正有效的还是代码
+											</p>
+										</div>
+									</div>
+									<footer>
+										<a href="list_java.html" class="button">去看更多</a>
+									</footer>
+								</section>
+							</div>
+						</div>
+						<hr />
+						<div class="row">
+							<article class="col-4 col-12-mobile special">
+								<a href="ssh_20191207.html" class="image featured"><img src="img/2019120727.png" width="368px" height="256px" alt="" /></a>
+								<header>
+									<h3><a href="ssh_20191207.html">简单的ssh框架</a></h3>
+								</header>
+								<p>
+									ssh框架指的是Spring、struts、hibernate<br>如何快速架设一个使用ssh框架的项目呢
+								</p>
+							</article>
+							<article class="col-4 col-12-mobile special">
+								<a href="ssh_jsj_20191207.html" class="image featured"><img src="img/20191207a13.png" width="368px" height="256px" alt="" /></a>
+								<header>
+									<h3><a href="ssh_jsj_20191207.html">简单使用jsp+servlet+javabean实现登录功能</a></h3>
+								</header>
+								<p>
+									用实战教你用<br>jsp+servlet+javabean
+								</p>
+							</article>
+							<article class="col-4 col-12-mobile special">
+								<a href="qd_20191208.html" class="image featured"><img src="img/201912081.png" width="368px" height="256px" alt="" /></a>
+								<header>
+									<h3><a href="qd_20191208.html">如何让textarea不可编辑只可读（博客常用）</a></h3>
+								</header>
+								<p>
+									博客里的代码块重点标记
+								</p>
+							</article>
+						</div>
+                        
+					</div>
+
+				</div>
+
+			<!-- Footer -->
+			<iframe id="iframe" width="100%" height="1200px" frameborder="0" scrolling="no" src="../fo.html"></iframe>
+
+		</div>
+
+		<!-- Scripts -->
+			<script src="../assets/js/jquery.min.js"></script>
+			<script src="../assets/js/jquery.dropotron.min.js"></script>
+			<script src="../assets/js/jquery.scrolly.min.js"></script>
+			<script src="../assets/js/jquery.scrollex.min.js"></script>
+			<script src="../assets/js/browser.min.js"></script>
+			<script src="../assets/js/breakpoints.min.js"></script>
+			<script src="../assets/js/util.js"></script>
+			<script src="../assets/js/main.js"></script>
+
+	</body>
+</html>

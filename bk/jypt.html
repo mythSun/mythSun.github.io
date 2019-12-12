@@ -1,0 +1,233 @@
+﻿<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<title>网上教学平台</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="../assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="../assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="right-sidebar is-preload">
+		<div id="page-wrapper">
+
+			<!-- Header -->
+				<div id="header">
+
+					<!-- Inner -->
+						<div class="inner">
+							<header>
+								<h1><a href="../index.html" id="logo">mythSun</a></h1>
+							</header>
+						</div>
+
+					<!-- Nav -->
+						<nav id="nav">
+							<ul>
+								<li><a href="../index.html">主页</a></li>
+								<li>
+									<a href="#">博客</a>
+									<ul>
+										<li><a href="info.html">个人</a></li>
+										<li>
+											<a href="#">技术 &hellip;</a>
+											<ul>
+												<li><a href="list_java.html">JAVA</a></li>
+												<li><a href="list_qd.html">前端</a></li>
+												<li><a href="list_fm.html">框架</a></li>
+												<li><a href="list_db.html">数据库</a></li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+								<li><a href="list_xm.html">项目</a></li>
+								<li><a href="list_zy.html">资源</a></li>
+								<li><a href="list_lx.html">联系</a></li>
+							</ul>
+						</nav>
+
+
+				</div>
+
+			<!-- Main -->
+				<div class="wrapper style1">
+
+					<div class="container">
+						<div class="row gtr-200">
+							<div class="col-8 col-12-mobile" id="content">
+								<article id="main">
+									<header>
+										<h2>网上教学平台</h2>
+										<p>
+大家好，我是mythSun。<br>
+很高兴能在这里和大家分享，用SS2H做的一个网上教学平台。<br>
+话不多说，直接开始。
+
+									  </p>
+									</header>
+                                    
+这个项目是最近做的，因为学校思政课感觉一直是老师在台上讲讲讲，<br>
+学生在下面该玩手机的玩手机，该干嘛干嘛，<br>
+很多情况下，老师渊博的知识储备，学生是跟不上的。<br>
+比如老师讲一些名人事迹，国家的相关知识，学生其实知道的不多，<br>
+至于去查，更不可能，所以就想，能不能开发一个网站，<br>
+学生上课前只需要大致浏览一下网站，就能知道这节课老师可能涉及到的东西，<br>
+既有定向性的学习作用，又能让学生有自主学习的好的开端。<br>
+所以初期的架构设置：<br>
+分为前端（学生浏览用）、后端（教师管理用）<br>
+前端最主要的功能模块就是要闻模块、课堂模块，<br>
+休闲模块包含社区模块、通知模块、下载模块。<br>
+后端主要用于管理和信息维护，主要模块对应为前端的管理模块。<br>
+网站建设采用SS2H，毕竟开发起来方便快捷，可维护性强嘛。<br>
+源代码就不贴了，7000多行代码，全粘进来也不现实，核心代码的话也没啥核心的，都是常规操作，会点SS2H都能做。<br>
+下面是网站示意图（主要演示主要的）<br>
+首页，主要显要闻，也就是教师学生提前了解的。图中是测试数据。<br>
+<img src="img/20191212z1.png" width="100%" height="100%"><br>
+当随便点开一篇文章之后，如下，涉及到信息，我给抹去了。<br>
+<img src="img/20191212z2.png" width="100%" height="100%"><br>
+前端登录后，如图，界面比较简陋，因为前端不是很擅长。<br>
+<img src="img/20191212z3.png" width="100%" height="100%"><br>
+点击作业后，可以看自己的作业，只有提交后，教师才可以打成绩，然后学生能看到自己的成绩。<br>
+<img src="img/20191212z4.png" width="100%" height="100%"><br>
+这是附加模块，资源下载，学生可以把这个当做一个云文件存储库<br>
+<img src="img/20191212z5.png" width="100%" height="100%"><br>
+后端必须登录后才能使用，设置了拦截器，一旦没有登录凭证，<br>
+会转到登录界面，防止不安全。如图是后台管理界面，也是没有认真做前端，因为前端确实不是很擅长。<br>
+<img src="img/20191212z6.png" width="100%" height="100%"><br>
+后端主要就是对前台文章一类的信息维护，主要工作还是对数据库的操作。<br>
+<br>
+分享到这里吧，这个后端代码还是比较规范的，如果有个好的前端，或许会更精致一些。<br>
+<br>
+
+
+
+								</article>
+							</div>
+							<div class="col-4 col-12-mobile" id="sidebar">
+								<hr class="first" />
+								<section>
+									<header>
+										<h3><a href="info.html">了解作者</a></h3>
+									</header>
+									<p>
+										mythSun，关键词“神秘”和“太阳”，我的神秘源于炽热的光芒。这个组合也巧妙的把我的姓名简写融合进去。
+                                        为什么要搭建这个博客平台呢，最开始是因为见到很多程序员都有自己的博客，那我也做一个吧。后来做着做着发现，好像还挺有意思
+                                        就坚持了下来。
+									</p>
+									<footer>
+										<a href="info.html" class="button">了解更多</a>
+									</footer>
+								</section>
+								<hr />
+								<section>
+									<header>
+										<h3>博主推荐</h3>
+									</header>
+									<p>
+										来看看我推荐的博文吧
+									</p>
+									<div class="row gtr-50">
+										<div class="col-4">
+											<a href="ssh_20191207.html" class="image fit"><img src="img/2019120727.png" width="175" height="139" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>简单搭建ssh框架实现登录功能</h4>
+											<p>
+												5分钟快速搭建ssh框架的项目
+											</p>
+										</div>
+										<div class="col-4">
+											<a href="ssh_jsj_20191207.html" class="image fit"><img src="img/20191207a13.png" width="175" height="139" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>简单使用jsp+servlet+javabean实现登录功能</h4>
+											<p>
+												用实战教你用jsp+servlet+javabean
+											</p>
+										</div>
+										<div class="col-4">
+											<a href="qd_20191208.html" class="image fit"><img src="img/201912081.png" width="175" height="139" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>如何让textarea不可编辑只可读（博客常用）</h4>
+											<p>
+												博客里的代码块重点标记
+											</p>
+										</div>
+										<div class="col-4">
+											<a href="ssh_201912111.html" class="image fit"><img src="img/201912111.png" width="175" height="139" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>spring控制反转</h4>
+											<p>
+												都说控制反转好，那么这个东西是什么呢
+											</p>
+										</div>
+										<div class="col-4">
+											<a href="ssh_201912112.html" class="image fit"><img src="img/201912112.png" width="175" height="139" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>如何让applicationContext配置文件在src下</h4>
+											<p>
+												其实配置文件本身就是标记，真正有效的还是代码
+											</p>
+										</div>
+									</div>
+									<footer>
+										<a href="list_java.html" class="button">去看更多</a>
+									</footer>
+								</section>
+							</div>
+						</div>
+						<hr />
+						<div class="row">
+							<article class="col-4 col-12-mobile special">
+								<a href="ssh_20191207.html" class="image featured"><img src="img/2019120727.png" width="368px" height="256px" alt="" /></a>
+								<header>
+									<h3><a href="ssh_20191207.html">简单的ssh框架</a></h3>
+								</header>
+								<p>
+									ssh框架指的是Spring、struts、hibernate<br>如何快速架设一个使用ssh框架的项目呢
+								</p>
+							</article>
+							<article class="col-4 col-12-mobile special">
+								<a href="ssh_jsj_20191207.html" class="image featured"><img src="img/20191207a13.png" width="368px" height="256px" alt="" /></a>
+								<header>
+									<h3><a href="ssh_jsj_20191207.html">简单使用jsp+servlet+javabean实现登录功能</a></h3>
+								</header>
+								<p>
+									用实战教你用<br>jsp+servlet+javabean
+								</p>
+							</article>
+							<article class="col-4 col-12-mobile special">
+								<a href="qd_20191208.html" class="image featured"><img src="img/201912081.png" width="368px" height="256px" alt="" /></a>
+								<header>
+									<h3><a href="qd_20191208.html">如何让textarea不可编辑只可读（博客常用）</a></h3>
+								</header>
+								<p>
+									博客里的代码块重点标记
+								</p>
+							</article>
+						</div>
+                        
+					</div>
+
+				</div>
+
+			<!-- Footer -->
+			<iframe id="iframe" width="100%" height="1200px" frameborder="0" scrolling="no" src="../fo.html"></iframe>
+
+		</div>
+
+		<!-- Scripts -->
+			<script src="../assets/js/jquery.min.js"></script>
+			<script src="../assets/js/jquery.dropotron.min.js"></script>
+			<script src="../assets/js/jquery.scrolly.min.js"></script>
+			<script src="../assets/js/jquery.scrollex.min.js"></script>
+			<script src="../assets/js/browser.min.js"></script>
+			<script src="../assets/js/breakpoints.min.js"></script>
+			<script src="../assets/js/util.js"></script>
+			<script src="../assets/js/main.js"></script>
+
+	</body>
+</html>

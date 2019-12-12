@@ -1,0 +1,253 @@
+﻿<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<title>collection集合接口讲解</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="../assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="../assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="right-sidebar is-preload">
+		<div id="page-wrapper">
+
+			<!-- Header -->
+				<div id="header">
+
+					<!-- Inner -->
+						<div class="inner">
+							<header>
+								<h1><a href="../index.html" id="logo">mythSun</a></h1>
+							</header>
+						</div>
+
+					<!-- Nav -->
+						<nav id="nav">
+							<ul>
+								<li><a href="../index.html">主页</a></li>
+								<li>
+									<a href="#">博客</a>
+									<ul>
+										<li><a href="info.html">个人</a></li>
+										<li>
+											<a href="#">技术 &hellip;</a>
+											<ul>
+												<li><a href="list_java.html">JAVA</a></li>
+												<li><a href="list_qd.html">前端</a></li>
+												<li><a href="list_fm.html">框架</a></li>
+												<li><a href="list_db.html">数据库</a></li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+								<li><a href="list_xm.html">项目</a></li>
+								<li><a href="list_zy.html">资源</a></li>
+								<li><a href="list_lx.html">联系</a></li>
+							</ul>
+						</nav>
+
+
+				</div>
+
+			<!-- Main -->
+				<div class="wrapper style1">
+
+					<div class="container">
+						<div class="row gtr-200">
+							<div class="col-8 col-12-mobile" id="content">
+								<article id="main">
+									<header>
+										<h2>collection集合接口讲解</h2>
+										<p>
+大家好，我是mythSun。<br>
+很高兴能在这里和大家分享，collection集合接口讲解。<br>
+话不多说，直接开始。
+
+									  </p>
+									</header>
+
+
+关于集合有两大类，collection和map<br>
+先讲解集合collection接口，对你没有看错，就是接口<br>
+这个接口下面派生出两大类接口：分别是set和list。<br>
+Set接口又有两个主要的实现类：treeset和hashset；<br>
+list接口的实现类有两个大家很熟悉，arraylist和linkedlist。<br>
+Arraylist是一个数组数组线性表。<br>
+Linkedlist是一个双向链表。<br>
+<br>
+List接口定义的常用方法如下：<br>
+size()：获取List的长度（即List包含数据元素的总数）<br>
+add(Object obj)：向List的尾部添加一个元素obj<br>
+add(int index, Object obj)：向List中索引index的位置添加元素obj<br>
+set(int i, Object obj)：使用元素obj替换索引i 位置的元素，并返回被替换的元素。<br>
+remove(int i)：删除索引i 指定位置的元素，并返回被删元素<br>
+get(int i)：返回索引i 指定位置的元素。<br>
+<br>
+ArrayList和LinkedList在用法上没有区别，但是在功能上还是有区别的。<br>
+LinkedList经常用在增删操作较多而查询操作较少的情况下，ArrayList则相反。<br>
+<br>
+ArrayList使用连续的内存单元存储数据元素，<br>
+当添加或删除数据元素时（除数组线性表的最后位置外），ArrayList需要移动其被添加（或删除）元素后面的全部元素。<br>
+在遍历所有元素方面，ArrayList具有很好的效率，因为其数据元素的连续性，<br>
+所有只需要获取到第一个元素的地址，再使用地址指针下移的方式即可获取全部元素。<br>
+LinkedList是使用指针关联的双向链表，其获取下一个元素的方式是通过指向下一个元素的地址对象（通常叫做指针）获取的，<br>
+由于它的链式存储结构，LinkedList在任意位置的元素插入（或删除）效率都比较快，<br>
+因为元素插入（或删除）不需要移动LinkedList中的其它元素，<br>
+当需要一个频繁插入（或删除）的线性结构时，首选的List实现类应该是LinkedList。<br>
+LinkedList对于ArrayList来说，其遍历速度较慢，因为他获取下一个元素的时间为寻址时间。<br>
+<br>
+LinkedList适合存储数据元素变动较大的线性集合，<br>
+可以更快速的对指定位置的元素进行增加、删除、修改和查询功能。<br>
+（之前查阅资料，看这个比较详细，忘记出处了，勿怪）<br>
+<br>
+下面说set接口：<br>
+先说第一个实现类<br>
+HashSet类 <br>
+它不允许出现重复元素； 不保证和政集合中元素的顺序 允许包含值为null的元素，但最多只能有一个null元素<br>
+TreeSet <br>
+可以实现排序等功能的集合，它在讲对象元素添加到集合中时会自动按照某种比较规则将其插入到有序的对象序列中，并保证该集合元素按照“升序”排列。<br>
+<br>
+最后是另一大类：<br>
+Map集合接口<br>
+<br>
+Map没有继承Collection接口，Map提供key到value的映射。<br>
+一个Map中不能包含相同的key，每个key只能映射一个 value。Map接口提供3种集合的视图，<br>
+Map的内容可以被当作一组key集合，一组value集合，或者一组key-value映射。<br>
+<br>
+主要方法:<br>
+boolean equals(Object o)比较对象<br>
+boolean remove(Object o)删除一个对象<br>
+put(Object key,Object value)添加key和value<br>
+<br>
+<br>
+
+								</article>
+							</div>
+							<div class="col-4 col-12-mobile" id="sidebar">
+								<hr class="first" />
+								<section>
+									<header>
+										<h3><a href="info.html">了解作者</a></h3>
+									</header>
+									<p>
+										mythSun，关键词“神秘”和“太阳”，我的神秘源于炽热的光芒。这个组合也巧妙的把我的姓名简写融合进去。
+                                        为什么要搭建这个博客平台呢，最开始是因为见到很多程序员都有自己的博客，那我也做一个吧。后来做着做着发现，好像还挺有意思
+                                        就坚持了下来。
+									</p>
+									<footer>
+										<a href="info.html" class="button">了解更多</a>
+									</footer>
+								</section>
+								<hr />
+								<section>
+									<header>
+										<h3>博主推荐</h3>
+									</header>
+									<p>
+										来看看我推荐的博文吧
+									</p>
+									<div class="row gtr-50">
+										<div class="col-4">
+											<a href="ssh_20191207.html" class="image fit"><img src="img/2019120727.png" width="175" height="139" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>简单搭建ssh框架实现登录功能</h4>
+											<p>
+												5分钟快速搭建ssh框架的项目
+											</p>
+										</div>
+										<div class="col-4">
+											<a href="ssh_jsj_20191207.html" class="image fit"><img src="img/20191207a13.png" width="175" height="139" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>简单使用jsp+servlet+javabean实现登录功能</h4>
+											<p>
+												用实战教你用jsp+servlet+javabean
+											</p>
+										</div>
+										<div class="col-4">
+											<a href="qd_20191208.html" class="image fit"><img src="img/201912081.png" width="175" height="139" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>如何让textarea不可编辑只可读（博客常用）</h4>
+											<p>
+												博客里的代码块重点标记
+											</p>
+										</div>
+										<div class="col-4">
+											<a href="ssh_201912111.html" class="image fit"><img src="img/201912111.png" width="175" height="139" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>spring控制反转</h4>
+											<p>
+												都说控制反转好，那么这个东西是什么呢
+											</p>
+										</div>
+										<div class="col-4">
+											<a href="ssh_201912112.html" class="image fit"><img src="img/201912112.png" width="175" height="139" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>如何让applicationContext配置文件在src下</h4>
+											<p>
+												其实配置文件本身就是标记，真正有效的还是代码
+											</p>
+										</div>
+									</div>
+									<footer>
+										<a href="list_java.html" class="button">去看更多</a>
+									</footer>
+								</section>
+							</div>
+						</div>
+						<hr />
+						<div class="row">
+							<article class="col-4 col-12-mobile special">
+								<a href="ssh_20191207.html" class="image featured"><img src="img/2019120727.png" width="368px" height="256px" alt="" /></a>
+								<header>
+									<h3><a href="ssh_20191207.html">简单的ssh框架</a></h3>
+								</header>
+								<p>
+									ssh框架指的是Spring、struts、hibernate<br>如何快速架设一个使用ssh框架的项目呢
+								</p>
+							</article>
+							<article class="col-4 col-12-mobile special">
+								<a href="ssh_jsj_20191207.html" class="image featured"><img src="img/20191207a13.png" width="368px" height="256px" alt="" /></a>
+								<header>
+									<h3><a href="ssh_jsj_20191207.html">简单使用jsp+servlet+javabean实现登录功能</a></h3>
+								</header>
+								<p>
+									用实战教你用<br>jsp+servlet+javabean
+								</p>
+							</article>
+							<article class="col-4 col-12-mobile special">
+								<a href="qd_20191208.html" class="image featured"><img src="img/201912081.png" width="368px" height="256px" alt="" /></a>
+								<header>
+									<h3><a href="qd_20191208.html">如何让textarea不可编辑只可读（博客常用）</a></h3>
+								</header>
+								<p>
+									博客里的代码块重点标记
+								</p>
+							</article>
+						</div>
+                        
+					</div>
+
+				</div>
+
+			<!-- Footer -->
+			<iframe id="iframe" width="100%" height="1200px" frameborder="0" scrolling="no" src="../fo.html"></iframe>
+
+		</div>
+
+		<!-- Scripts -->
+			<script src="../assets/js/jquery.min.js"></script>
+			<script src="../assets/js/jquery.dropotron.min.js"></script>
+			<script src="../assets/js/jquery.scrolly.min.js"></script>
+			<script src="../assets/js/jquery.scrollex.min.js"></script>
+			<script src="../assets/js/browser.min.js"></script>
+			<script src="../assets/js/breakpoints.min.js"></script>
+			<script src="../assets/js/util.js"></script>
+			<script src="../assets/js/main.js"></script>
+
+	</body>
+</html>

@@ -1,0 +1,327 @@
+﻿<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<title>游戏脚本</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="../assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="../assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="right-sidebar is-preload">
+		<div id="page-wrapper">
+
+			<!-- Header -->
+				<div id="header">
+
+					<!-- Inner -->
+						<div class="inner">
+							<header>
+								<h1><a href="../index.html" id="logo">mythSun</a></h1>
+							</header>
+						</div>
+
+					<!-- Nav -->
+						<nav id="nav">
+							<ul>
+								<li><a href="../index.html">主页</a></li>
+								<li>
+									<a href="#">博客</a>
+									<ul>
+										<li><a href="info.html">个人</a></li>
+										<li>
+											<a href="#">技术 &hellip;</a>
+											<ul>
+												<li><a href="list_java.html">JAVA</a></li>
+												<li><a href="list_qd.html">前端</a></li>
+												<li><a href="list_fm.html">框架</a></li>
+												<li><a href="list_db.html">数据库</a></li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+								<li><a href="list_xm.html">项目</a></li>
+								<li><a href="list_zy.html">资源</a></li>
+								<li><a href="list_lx.html">联系</a></li>
+							</ul>
+						</nav>
+
+
+				</div>
+
+			<!-- Main -->
+				<div class="wrapper style1">
+
+					<div class="container">
+						<div class="row gtr-200">
+							<div class="col-8 col-12-mobile" id="content">
+								<article id="main">
+									<header>
+										<h2>游戏脚本</h2>
+										<p>
+大家好，我是mythSun。<br>
+很高兴能在这里和大家分享，做一个游戏脚本（外“挂”）。<br>
+话不多说，直接开始。
+
+									  </p>
+									</header>
+
+不知道大家以前玩没玩过“游戏王卡”就是这个。<br>
+<img src="img/20191212b1.png" width="100%" height="100%"><br>
+这本来是桌面纸牌，被游戏公司转化成了电子游戏，<br>
+我呢，恰恰喜欢这个“游戏王卡”，就玩了，<br>
+可能是因为刚出的游戏，让我有流量分析工具等一堆工具检测到了几个重要的数据，<br>
+然后加以“嗯嗯你懂的”，发现了一个bug。<br>
+发现bug了，作为程序员的我们，怎么能闲着呢？<br>
+利用刚学的python，查资料，抓紧写了一个脚本，其实就是外挂，<br>
+嘿嘿，那叫一个爽，用了一个周没被发现，<br>
+还给了游戏里的朋友一起用，后来良心发现，<br>
+主动联系人公司，提交了这个bug，期待怎么不给我个公告奖励一下我，<br>
+结果人家没搭理我。。。不知道现在bug修复了没，反正自那以后也没玩过。<br>
+话不多少，介绍一下吧。核心代码就不发了，再发再扯上法律问题，我就尴尬了。<br>
+首先这是打开之后的界面。<br>
+因为怕给游戏里的朋友玩，被疯传，然后我负责任，就设置了账号密码，一个只能用一次，免得疯传。<br>
+<img src="img/20191212b2.png" width="100%" height="100%"><br>
+登陆之后，这是主页面。<br>
+<img src="img/20191212b3.png" width="100%" height="100%"><br>
+选择自己需要的，前面四个能自动帮玩家刷完每日基本任务，<br>
+获得大量资源，免了“肝”，后面四个功能，其实不是很完善，<br>
+因为有时候会程序终止，毕竟我才学了俩月python。<br>
+开启之后，这个就会运行到后台，然后你只需要挂着你那个游戏就行，<br>
+他就自动帮你打了，当然你也可以看着界面发呆，哈哈哈哈。<br>
+<br>
+就到这吧，这个就是一个分享，算是自己学python的一件趣事，<br>
+毕竟能写一个外挂，也是人生第一次嘛。<br>
+<br>
+郑重声明：<br>
+本人未扩散该外挂，未用此盈利，并且及时提交了bug建议（只不过没搭理我，囧）<br>
+本人未扩散该外挂，未用此盈利，并且及时提交了bug建议（只不过没搭理我，囧）<br>
+本人未扩散该外挂，未用此盈利，并且及时提交了bug建议（只不过没搭理我，囧）<br>
+<br>
+你以为这就完了吗？<br>
+当然不会让各位空手而来，免费送大家一个静态网站爬虫吧<br>
+（爬豆瓣高分100电影的名称，就不用再逛知乎找电影了，一个爬虫满足你）<br>
+直接上代码，属于基本操作，不多解释了。里面都有注释，也有思路<br>
+basic_crawler.crawler_start.py<br>
+<textarea rows="30" cols="100%" readonly="readonly">
+'''
+Created on 2017年7月30日
+基本爬虫的入口
+@author: Administrator
+'''
+import crawler_func
+#定义要爬取的静态网址
+url="https://movie.douban.com/top250"
+count=0
+
+while count<10:
+    #整体获取页面并解析
+    html=crawler_func.get_url(url)
+    movie_names=[]
+    movie_names=crawler_func.get_movie_names(html)
+    #保存
+    crawler_func.save_result(movie_names)
+    #下一页
+    url=crawler_func.next_page(html,url)
+    #计数器自加1
+    count=count+1
+</textarea><br>
+第二个文件代码basic_crawler.crawler_func.py<br>
+<textarea rows="30" cols="100%" readonly="readonly">
+'''
+Created on 2017年7月30日
+基本爬虫的方法：
+1、get_url(url):请求url，返回html
+2、get_movie_names(html):解析html
+3、next_page():自动去下一页继续爬虫
+4、save_result():爬虫结果存储进文件
+@author: Administrator
+'''
+import requests
+from bs4 import BeautifulSoup
+
+def get_url(url):
+    '''
+    a通过传进来的网址，获得这个网址的html数据结构
+    url:网址
+    return@ html:返回的网页结构
+    '''
+    res=requests.get(url)
+    html=res.text
+    return html
+
+def get_movie_names(html):
+    '''
+    a解析html
+    html:传进来的网址的html数据结构
+    return@ movie_names:返回的当前页的电影名称
+    
+    '''
+    movie_names=[]
+    mysoup=BeautifulSoup(html,'lxml')
+    movie_zone=mysoup.find('ol')
+    movie_list=movie_zone.find_all('li')
+    for movie in movie_list:
+        name=movie.find('span',attrs={'class':'title'}).getText()
+        movie_names.append(name)
+    return movie_names
+
+def next_page(html,url):
+    '''
+    a自动去下一页继续爬虫
+    url:网址
+    html:网页结构
+    return@ next_url:下一页
+    '''
+    mysoup=BeautifulSoup(html,'lxml')
+    nextpage=mysoup.find('span',attrs={'class':'next'}).find('a')
+    if nextpage:
+        href=nextpage['href']
+    next_url=url+href
+    return next_url
+    
+def save_result(movie_names):
+    '''
+    a爬虫结果存储进文件
+    movie_names:电影名称
+    return@ null:
+    '''
+    with open('movie_names.txt','a+') as f:
+        for name in movie_names:
+            f.write(name+'\n')
+</textarea>
+<br>
+
+
+
+
+								</article>
+							</div>
+							<div class="col-4 col-12-mobile" id="sidebar">
+								<hr class="first" />
+								<section>
+									<header>
+										<h3><a href="info.html">了解作者</a></h3>
+									</header>
+									<p>
+										mythSun，关键词“神秘”和“太阳”，我的神秘源于炽热的光芒。这个组合也巧妙的把我的姓名简写融合进去。
+                                        为什么要搭建这个博客平台呢，最开始是因为见到很多程序员都有自己的博客，那我也做一个吧。后来做着做着发现，好像还挺有意思
+                                        就坚持了下来。
+									</p>
+									<footer>
+										<a href="info.html" class="button">了解更多</a>
+									</footer>
+								</section>
+								<hr />
+								<section>
+									<header>
+										<h3>博主推荐</h3>
+									</header>
+									<p>
+										来看看我推荐的博文吧
+									</p>
+									<div class="row gtr-50">
+										<div class="col-4">
+											<a href="ssh_20191207.html" class="image fit"><img src="img/2019120727.png" width="175" height="139" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>简单搭建ssh框架实现登录功能</h4>
+											<p>
+												5分钟快速搭建ssh框架的项目
+											</p>
+										</div>
+										<div class="col-4">
+											<a href="ssh_jsj_20191207.html" class="image fit"><img src="img/20191207a13.png" width="175" height="139" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>简单使用jsp+servlet+javabean实现登录功能</h4>
+											<p>
+												用实战教你用jsp+servlet+javabean
+											</p>
+										</div>
+										<div class="col-4">
+											<a href="qd_20191208.html" class="image fit"><img src="img/201912081.png" width="175" height="139" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>如何让textarea不可编辑只可读（博客常用）</h4>
+											<p>
+												博客里的代码块重点标记
+											</p>
+										</div>
+										<div class="col-4">
+											<a href="ssh_201912111.html" class="image fit"><img src="img/201912111.png" width="175" height="139" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>spring控制反转</h4>
+											<p>
+												都说控制反转好，那么这个东西是什么呢
+											</p>
+										</div>
+										<div class="col-4">
+											<a href="ssh_201912112.html" class="image fit"><img src="img/201912112.png" width="175" height="139" alt="" /></a>
+										</div>
+										<div class="col-8">
+											<h4>如何让applicationContext配置文件在src下</h4>
+											<p>
+												其实配置文件本身就是标记，真正有效的还是代码
+											</p>
+										</div>
+									</div>
+									<footer>
+										<a href="list_java.html" class="button">去看更多</a>
+									</footer>
+								</section>
+							</div>
+						</div>
+						<hr />
+						<div class="row">
+							<article class="col-4 col-12-mobile special">
+								<a href="ssh_20191207.html" class="image featured"><img src="img/2019120727.png" width="368px" height="256px" alt="" /></a>
+								<header>
+									<h3><a href="ssh_20191207.html">简单的ssh框架</a></h3>
+								</header>
+								<p>
+									ssh框架指的是Spring、struts、hibernate<br>如何快速架设一个使用ssh框架的项目呢
+								</p>
+							</article>
+							<article class="col-4 col-12-mobile special">
+								<a href="ssh_jsj_20191207.html" class="image featured"><img src="img/20191207a13.png" width="368px" height="256px" alt="" /></a>
+								<header>
+									<h3><a href="ssh_jsj_20191207.html">简单使用jsp+servlet+javabean实现登录功能</a></h3>
+								</header>
+								<p>
+									用实战教你用<br>jsp+servlet+javabean
+								</p>
+							</article>
+							<article class="col-4 col-12-mobile special">
+								<a href="qd_20191208.html" class="image featured"><img src="img/201912081.png" width="368px" height="256px" alt="" /></a>
+								<header>
+									<h3><a href="qd_20191208.html">如何让textarea不可编辑只可读（博客常用）</a></h3>
+								</header>
+								<p>
+									博客里的代码块重点标记
+								</p>
+							</article>
+						</div>
+                        
+					</div>
+
+				</div>
+
+			<!-- Footer -->
+			<iframe id="iframe" width="100%" height="1200px" frameborder="0" scrolling="no" src="../fo.html"></iframe>
+
+		</div>
+
+		<!-- Scripts -->
+			<script src="../assets/js/jquery.min.js"></script>
+			<script src="../assets/js/jquery.dropotron.min.js"></script>
+			<script src="../assets/js/jquery.scrolly.min.js"></script>
+			<script src="../assets/js/jquery.scrollex.min.js"></script>
+			<script src="../assets/js/browser.min.js"></script>
+			<script src="../assets/js/breakpoints.min.js"></script>
+			<script src="../assets/js/util.js"></script>
+			<script src="../assets/js/main.js"></script>
+
+	</body>
+</html>
